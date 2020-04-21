@@ -11,15 +11,21 @@ public class HandlerFactory {
 	public static final BroadcastHandlerPool broadcastHandlerPool=new BroadcastHandlerPool(maxNum);
 	public static final OrderHandlerPool orderHandlerPool=new OrderHandlerPool(maxNum);
 	public static final LoginHandlerPool loginHandlerPool=new LoginHandlerPool(maxNum);
+	public static final RegisterHandlerPool registerHandlerPool=new RegisterHandlerPool(maxNum);
+	public static final RootHandlerPool rootHandlerPool=new RootHandlerPool(maxNum);
+	public static final RecordHandlerPool recordHandlerPool=new RecordHandlerPool(maxNum);
 	//类按顺序加载，必须放在最后
 	private static final HandlerFactory instance=new HandlerFactory();
 	
 	//单例模式静态工厂
-	private  HandlerFactory() {
+	private HandlerFactory() {
 		handlerPools.add(startHandlerPool);
 		handlerPools.add(broadcastHandlerPool);
 		handlerPools.add(orderHandlerPool);
 		handlerPools.add(loginHandlerPool);
+		handlerPools.add(registerHandlerPool);
+		handlerPools.add(rootHandlerPool);
+		handlerPools.add(recordHandlerPool);
 	}
 	public static HandlerFactory getInstance() {
 		return instance;

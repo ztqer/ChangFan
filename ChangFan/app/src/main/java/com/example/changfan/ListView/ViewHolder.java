@@ -4,9 +4,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import com.example.changfan.ListView.Data.Cloth;
+import com.example.changfan.ListView.Data.ClothKind;
 import com.example.changfan.ListView.Data.ClothWithNumber;
 import com.example.changfan.ListView.Data.IData;
 import com.example.changfan.ListView.Data.Number;
+import com.example.changfan.ListView.Data.Order;
 import com.example.changfan.R;
 
 //存储ListView的一行数据
@@ -49,6 +51,14 @@ public class ViewHolder<T extends IData>{
         if(data.getClass()== ClothWithNumber.class){
             ClothWithNumber cwn=(ClothWithNumber)data;
             return cwn.id+" "+cwn.color+" "+cwn.number;
+        }
+        if(data.getClass()== ClothKind.class){
+            ClothKind ck=(ClothKind)data;
+            return ck.id+" "+ck.weight+" "+ck.length+" "+ck.provider+" "+ck.material;
+        }
+        if(data.getClass()== Order.class){
+            Order o=(Order)data;
+            return o.id+" "+o.clothWithNumber.id+" "+o.clothWithNumber.color+" "+o.clothWithNumber.number+" "+ o.price+" "+o.client+" "+o.date+" "+o.state;
         }
         return null;
     }

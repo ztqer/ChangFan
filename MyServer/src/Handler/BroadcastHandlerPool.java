@@ -15,10 +15,11 @@ public class BroadcastHandlerPool extends AbstractHandlerPool {
 		return new BroadcastHandler();
 	}
 
+	//清空消息列表
 	@Override
 	protected AbstractHandler Reset(AbstractHandler h) {
 		BroadcastHandler newH=(BroadcastHandler)h;
-		newH.message=new LinkedList<String>(); 
+		newH.message.clear(); 
 		return newH;
 	}
 }

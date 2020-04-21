@@ -21,12 +21,17 @@ public class TcpThread implements Runnable {
     @Override
     public void run(){
         try {
-            socket=new Socket(test_serverIP,serverPort);
-            if(handler.HandleMessage(socket.getInputStream(), socket.getOutputStream(), buffer)) {
+            socket=new Socket(serverIP,serverPort);
+            handler.HandleMessage(socket.getInputStream(), socket.getOutputStream(), buffer);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        finally {
+            try {
                 socket.close();
+            } catch (IOException e2) {
+                e2.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

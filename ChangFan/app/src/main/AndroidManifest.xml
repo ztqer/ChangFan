@@ -3,6 +3,7 @@
     package="com.example.changfan">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:allowBackup="true"
@@ -28,6 +29,7 @@
             android:screenOrientation="portrait"/>
 
         <service android:name=".BackstageService.ListenToServerService" />
+        <service android:name=".BackstageService.RootDialogService"/>
 
     </application>
 

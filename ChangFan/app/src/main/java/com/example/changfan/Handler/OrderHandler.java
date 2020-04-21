@@ -18,11 +18,11 @@ public class OrderHandler extends AbstractHandler{
 		return "Order";
 	}
 
-	//向服务器发送订单
+	//向服务器发送需要广播的消息
 	@Override
 	protected void Work(InputStream is, OutputStream os, byte[] buffer) throws IOException {
-		String s3=tag+"/"+message;
-		os.write(s3.getBytes());
+		String s=tag+"/"+message;
+		os.write(s.getBytes());
 		os.flush();
 	}
 }

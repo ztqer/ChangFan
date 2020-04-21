@@ -5,9 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketAddress;
-import java.util.HashSet;
 import Handler.IHandler;
-import Handler.BroadcastHandler;
 import Handler.HandlerFactory;
 
 public class TcpThread implements Runnable {
@@ -31,12 +29,17 @@ public class TcpThread implements Runnable {
 	public void run(){
 		IHandler handler=HandlerFactory.getInstance().GetHandler("Start",address);
 		try {
-			if(handler.HandleMessage(is, os, buffer)) {
-				socket.close();
-			}
-		} catch (IOException e) {
+			handler.HandleMessage(is, os, buffer);
+		} catch (IOException e1) {
 			System.out.println(address+"-连接断开");
-			e.printStackTrace();
+		}
+		//保证总是能关闭连接
+		finally {
+			try {
+				socket.close();
+			} catch (IOException e2) {
+				System.out.println(address+"-关闭socket异常");
+			}
 		}
 	}
 }

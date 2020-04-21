@@ -1,61 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
+<com.example.changfan.MyViewPager
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/WarehouseActivity"
+    android:id="@+id/ViewPager"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/WarehouseActivity_MainContent"
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/WarehouseActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/WarehouseActivity_MainContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/WarehouseActivity_MainContent_LinearLayout1"
+                android:layout_width="250dp"
+                android:layout_height="300dp"
+                android:layout_below="@id/WarehouseActivity_MainContent_Button1"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                android:orientation="horizontal" />
+
+            <TextView
+                android:id="@+id/WarehouseActivity_MainContent_TextView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="30dp"
+                android:text="数量"
+                android:textSize="30sp"/>
+
+            <AutoCompleteTextView
+                android:id="@+id/WarehouseActivity_MainContent_EditText1"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="60dp"
+                android:layout_marginTop="70dp"
+                android:inputType="numberDecimal"
+                android:textSize="30sp"
+                android:completionThreshold="1"/>
+
+            <Button
+                android:id="@+id/WarehouseActivity_MainContent_Button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="250dp"
+                android:layout_marginTop="70dp"
+                android:text="添加"
+                android:textSize="30sp" />
+
+            <Button
+                android:id="@+id/WarehouseActivity_MainContent_Button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/WarehouseActivity_MainContent_LinearLayout1"
+                android:layout_marginTop="40dp"
+                android:text="完成"
+                android:textSize="30sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/WarehouseActivity_LeftMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@android:color/background_light">
+            <ListView
+                android:id="@+id/WarehouseActivity_LeftMenu_ListView1"
+                android:layout_width="250dp"
+                android:layout_height="match_parent"/>
+        </RelativeLayout>
+
         <LinearLayout
-            android:id="@+id/WarehouseActivity_MainContent_LinearLayout1"
-            android:layout_width="260dp"
-            android:layout_height="300dp"
-            android:layout_below="@id/WarehouseActivity_MainContent_Button1"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            android:orientation="horizontal" />
-
-        <EditText
-            android:id="@+id/WarehouseActivity_MainContent_EditText1"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="60dp"
-            android:layout_marginTop="60dp"
-            android:inputType="numberDecimal"
-            android:textSize="30sp" />
-
-        <Button
-            android:id="@+id/WarehouseActivity_MainContent_Button1"
+            android:id="@+id/WarehouseActivity_RightMenu"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="250dp"
-            android:layout_marginTop="60dp"
-            android:text="添加"
-            android:textSize="30sp" />
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/WarehouseActivity_RightMenu_Button1"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="增加新货品"
+                android:textSize="25sp"/>
+            <Button
+                android:id="@+id/WarehouseActivity_RightMenu_Button2"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="增加新库存"
+                android:textSize="25sp"/>
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/WarehouseActivity_MainContent_Button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/WarehouseActivity_MainContent_LinearLayout1"
-            android:layout_marginTop="50dp"
-            android:text="完成"
-            android:textSize="30sp" />
-    </RelativeLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
 
-    <RelativeLayout
-        android:id="@+id/WarehouseActivity_LeftMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@android:color/background_light">
-        <ListView
-            android:id="@+id/WarehouseActivity_LeftMenu_ListView1"
-            android:layout_width="250dp"
-            android:layout_height="match_parent"/>
-    </RelativeLayout>
-</androidx.drawerlayout.widget.DrawerLayout>
+</com.example.changfan.MyViewPager>
