@@ -69,4 +69,8 @@ public class RedisWriteUnility {
 	public static void Lpush(String key,String value) {
 		MyServer.jedisPool.getResource().lpush(key, value);
 	}
+	
+	public static void Del(String key) {
+		MyServer.jedisPool.getResource().del(key);
+	}
 }

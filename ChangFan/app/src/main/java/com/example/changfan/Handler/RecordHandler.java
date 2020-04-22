@@ -3,10 +3,11 @@ package com.example.changfan.Handler;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
 import com.example.changfan.ListView.Data.ClothKind;
 import com.example.changfan.ListView.Data.ClothWithNumber;
+import com.example.changfan.ListView.Data.Number;
 import com.example.changfan.ListView.Data.Order;
+import com.example.changfan.ListView.Data.Update;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -16,8 +17,7 @@ public class RecordHandler extends AbstractHandler {
     private Order order;
     private ClothKind clothKind;
     private ClothWithNumber clothWithNumber;
-    private String orderId;
-    private OrderHandler orderHandler;
+    private Update update;
     private Handler handler;
     //重载构造函数，对应不同的请求
     public RecordHandler(Order order, Handler handler){
@@ -35,11 +35,9 @@ public class RecordHandler extends AbstractHandler {
         this.clothWithNumber=clothWithNumber;
         this.handler=handler;
     }
-    public RecordHandler(String orderId,ClothWithNumber clothWithNumber,OrderHandler orderHandler,Handler handler){
+    public RecordHandler(Update update,Handler handler){
         type="Update";
-        this.orderId=orderId;
-        this.clothWithNumber=clothWithNumber;
-        this.orderHandler=orderHandler;
+        this.update=update;
         this.handler=handler;
     }
 
@@ -64,16 +62,16 @@ public class RecordHandler extends AbstractHandler {
                 data=type+"/"+clothWithNumber.id+"/"+clothWithNumber.color+"/"+clothWithNumber.number;
                 break;
             case "Update":
-                data=type+"/"+orderId+"/"+clothWithNumber.id+"/"+clothWithNumber.color+"/"+clothWithNumber.number;
+                data=type+"/"+update.orderId+"/"+update.clothWithNumber.id+"/"+update.clothWithNumber.color;
+                for(Number n:update.numbers){
+                    data=data+"/"+n.number;
+                }
                 break;
         }
         os.write(data.getBytes());
         os.flush();
         int len=is.read(buffer);
         String result=new String(buffer,0,len);
-        if(type.equals("Update")&&result.equals("订单"+orderId+"配货失败，不存在相应库存")){
-            orderHandler=null;
-        }
         //通知主线程显示结果
         Message msg=new Message();
         Bundle b=new Bundle();

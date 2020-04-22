@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,6 +23,7 @@ import com.example.changfan.ListView.Data.ClothWithNumber;
 import com.example.changfan.ListView.Data.IData;
 import com.example.changfan.ListView.Data.Number;
 import com.example.changfan.ListView.Data.Order;
+import com.example.changfan.ListView.Data.Update;
 import com.example.changfan.ListView.ListViewFragment;
 import com.example.changfan.ListView.MyAdapter;
 import java.util.ArrayList;
@@ -112,6 +112,24 @@ public class WarehouseActivity extends AbstractActivity implements View.OnClickL
             orderid.put(cwn,o.id);
             return;
         }
+        if(data.getClass()==Update.class){
+            Update u=(Update)data;
+            for(ClothWithNumber cwn:orderList){
+                if(orderid.get(cwn).equals(u.orderId)){
+                    String message=orderid.get(cwn)+" "+cwn.id+" "+cwn.color+" "+cwn.number+" 已完成配货";
+                    OrderHandler orderHandler=new OrderHandler("store",message);
+                    Connect(orderHandler);
+                    //删除fragment并移除相应的orderList元素
+                    leftMenu_myAdapter.RemoveLine(cwn);
+                    ListViewFragment<Number> fragment=fragmentHashMap.get(cwn);
+                    if(nowFragment==fragment){
+                        nowFragment=null;
+                    }
+                    getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                }
+            }
+            return;
+        }
     }
 
     @Override
@@ -150,18 +168,14 @@ public class WarehouseActivity extends AbstractActivity implements View.OnClickL
         }
         //完成一种布的配货
         if(v==mainContent_button2){
-            ClothWithNumber cwn=(ClothWithNumber) nowFragment.representative;
-            String message=orderid.get(cwn)+" "+cwn.id+" "+cwn.color+" "+cwn.number+" 已完成配货";
-            OrderHandler orderHandler=new OrderHandler("store",message);
-            //先尝试更改库存，成功则广播完成配货的消息
-            Connect(new RecordHandler(orderid.get(cwn),cwn,orderHandler,simplyDialogShowHandler));
-            if(orderHandler!=null){
-                Connect(orderHandler);
-                //删除fragment并移除相应的orderList元素
-                leftMenu_myAdapter.RemoveLine((ClothWithNumber) nowFragment.representative);
-                getSupportFragmentManager().beginTransaction().remove(nowFragment).commit();
-                nowFragment=null;
+            if(nowFragment==null||nowFragment.IsEmpty()){
+                Toast.makeText(context,"当前列表为空",Toast.LENGTH_LONG).show();
+                return;
             }
+            //先尝试更改库存，成功则广播完成配货的消息(在Refresh中)
+            ClothWithNumber cwn=(ClothWithNumber) nowFragment.representative;
+            Update u=new Update(orderid.get(cwn),cwn,nowFragment.Clear());
+            Connect(new RecordHandler(u,simplyDialogShowHandler));
             return;
         }
         //增加货品或库存的记录
@@ -206,6 +220,10 @@ public class WarehouseActivity extends AbstractActivity implements View.OnClickL
                 StringBuilder sb=new StringBuilder();
                 //拼接所有EditText信息，根据类型使用RecordHandler通信服务器
                 for(EditText et:editTexts){
+                    if(et.getText().toString().equals("")){
+                        Toast.makeText(context,"输入不能为空",Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     sb.append(et.getText().toString()+"/");
                 }
                 sb.deleteCharAt(sb.length()-1);

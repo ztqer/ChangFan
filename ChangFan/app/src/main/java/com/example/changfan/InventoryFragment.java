@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import com.example.changfan.ListView.Data.ClothKind;
 import com.example.changfan.ListView.Data.ClothWithNumber;
 import com.example.changfan.ListView.Data.IData;
+import com.example.changfan.ListView.Data.Number;
 import com.example.changfan.ListView.Data.Order;
 import com.example.changfan.ListView.Data.Update;
 import com.example.changfan.ListView.MyAdapter;
@@ -33,14 +34,14 @@ public class InventoryFragment extends Fragment implements View.OnClickListener 
 
     //内部类的数组，供activity填写数据时提示或限制操作
     public volatile ArrayList<TotalOfClothKind> kinds=new ArrayList<>();
-    public class TotalOfClothKind{
+    public static class TotalOfClothKind{
         public String id;
         public ArrayList<NumbersOfColor> colors=new ArrayList<>();
         public TotalOfClothKind(String id){
             this.id=id;
         }
     }
-    public class NumbersOfColor{
+    public static class NumbersOfColor{
         public String color;
         public ArrayList<Double> numbers=new ArrayList<>();
         public double numbercount=0d;
@@ -161,9 +162,14 @@ public class InventoryFragment extends Fragment implements View.OnClickListener 
         //更新订单和库存
         if(data.getClass()== Update.class){
             Update u=(Update)data;
+            ArrayList<Number> a=new ArrayList<>();
+            for(Number n:u.numbers){
+                a.add(n);
+            }
+            Update u_=new Update(u.orderId,u.clothWithNumber,a);
             for(int i=0;i<=orderListAdapter.getCount()-1;i++){
                 Order o=(Order)orderListAdapter.getItem(i);
-                if(u.orderID.equals(o.id)){
+                if(u.orderId.equals(o.id)){
                     o.state="发货中";
                     orderListAdapter.notifyDataSetChanged();
                     break;
@@ -175,9 +181,14 @@ public class InventoryFragment extends Fragment implements View.OnClickListener 
                 if(u.clothWithNumber.id.equals(ck.id)){
                     for(int j=0;j<=inventoryListAdapter.getChildrenCount(i)-1;j++){
                         ClothWithNumber cwn=(ClothWithNumber) inventoryListAdapter.getChild(i,j);
-                        if((cwn.color.equals(u.clothWithNumber.color))&&(cwn.number==u.clothWithNumber.number)){
-                            inventoryListAdapter.RemoveChild(i,j);
-                            break;
+                        if((cwn.color.equals(u.clothWithNumber.color)&&(!u.numbers.isEmpty()))){
+                            for(Number n:u.numbers){
+                                if(n.number==cwn.number){
+                                    u.numbers.remove(n);
+                                    inventoryListAdapter.RemoveChild(i,j);
+                                    break;
+                                }
+                            }
                         }
                     }
                     break;
@@ -185,11 +196,13 @@ public class InventoryFragment extends Fragment implements View.OnClickListener 
             }
             //更新公开数据
             for(TotalOfClothKind kind:kinds){
-                if(u.clothWithNumber.id.equals(kind.id)){
+                if(u_.clothWithNumber.id.equals(kind.id)){
                     for(NumbersOfColor color:kind.colors){
-                        if(u.clothWithNumber.color.equals(color.color)){
-                            color.numbers.remove(u.clothWithNumber.number);
-                            color.numbercount-=u.clothWithNumber.number;
+                        if((u_.clothWithNumber.color.equals(color.color))&&(!u_.numbers.isEmpty())){
+                            for(Number n:u_.numbers){
+                                color.numbers.remove(n.number);
+                                color.numbercount-=n.number;
+                            }
                             break;
                         }
                     }

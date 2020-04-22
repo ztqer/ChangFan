@@ -42,13 +42,19 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     //按钮响应，读取输入信息，尝试登陆与注册
     @Override
     public void onClick(View view) {
+        if(editText1.getText().toString().equals("")||editText2.getText().toString().equals("")){
+            Toast.makeText(context,"输入不能为空",Toast.LENGTH_LONG).show();
+            return;
+        }
         String username=editText1.getText().toString();
         String password=editText2.getText().toString();
         if(view==button1){
             TryLogin(username,password);
+            return;
         }
         if(view==button2){
             TryRegister(username,password);
+            return;
         }
     }
 
@@ -74,9 +80,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                     public void onClick(DialogInterface dialog, int which) {
                                         if(which==0){
                                             MyStartActivity(new Intent(context,StoreActivity.class),username,orders,clothkinds,inventory);
+                                            dialog.dismiss();
                                         }
                                         else if(which==1){
                                             MyStartActivity(new Intent(context,WarehouseActivity.class),username,orders,clothkinds,inventory);
+                                            dialog.dismiss();
                                         }
                                     }
                                 }).create().show();

@@ -11,42 +11,53 @@ public class UpdateRecordTransacation extends RecordTransacation {
 	private String orderId;
 	private String clothId;
 	private String color;
-	private String number;
-	//库存记录在列表中前方元素个数
-	private int num;
+	private ArrayList<String> numbers=new ArrayList<>();
+	private String numbers_String="";
+	//其余的库存记录
+	private ArrayList<String> inventoryLeft=new ArrayList<>();
 	
 	//解析客户端发来的字符串
 	public UpdateRecordTransacation(String data) {
-		String[] strings=new String[4];
+		ArrayList<String> arrayList=new ArrayList<>();
 		int begin=0;
-		int index=0;
 		for(int i=0;i<=data.length()-2;i++) {
 			if(data.charAt(i)=='/') {
-				strings[index]=data.substring(begin, i);
-				index++;
+				arrayList.add(data.substring(begin, i));
 				begin=i+1;
 			}
 		}
-		strings[index]=data.substring(begin, data.length());
-		orderId=strings[0];
-		clothId=strings[1];
-		color=strings[2];
-		number=strings[3];
+		arrayList.add(data.substring(begin));
+		orderId=arrayList.get(0);
+		clothId=arrayList.get(1);
+		color=arrayList.get(2);
+		for(int i=3;i<=arrayList.size()-1;i++) {
+			numbers.add(arrayList.get(i));
+			numbers_String+="/"+arrayList.get(i);
+		}
 	}
 	
-	//查询是否存在相应库存
+	//查询相应库存的位置
 	@Override
 	public void Start() {
-		boolean b=false;
 		ArrayList<String> arrayList=new ArrayList<>(MyServer.jedisPool.getResource().lrange("inventory_"+clothId, 0, -1));
-    	for(int i=0;i<=arrayList.size()-2;i++) {
-    		if((arrayList.get(i).equals(color)&&arrayList.get(i+1).equals(number))){
-    			b=true;
-    			num=i;
-    			break;
+		for(int i=0;i<=arrayList.size()-2;i=i+2) {
+    		boolean b=false;
+    		if((!numbers.isEmpty())&&(arrayList.get(i).equals(color))){
+    			for(int j=0;j<=numbers.size()-1;j++) {
+    				if(numbers.get(j).equals(arrayList.get(i+1))) {
+    					numbers.remove(j);
+    					b=true;
+    					break;
+    				}
+    			}
     		}
+    		if(b==false){
+				inventoryLeft.add(arrayList.get(i));
+				inventoryLeft.add(arrayList.get(i+1));
+			}
     	}
-    	if(b==false) {
+    	//存在匹配不到的库存则回滚
+    	if(!numbers.isEmpty()) {
     		Rollback();
     	}
 	}
@@ -59,18 +70,13 @@ public class UpdateRecordTransacation extends RecordTransacation {
 			return;
 		}
 		RedisWriteUnility.Lock();
-		//将LIST前面部分元素入栈
-		Stack<String> stack=new Stack<>();
-		for(int i=1;i<=num;i++) {
-			stack.push(RedisWriteUnility.Lpop("inventory_"+clothId));
+		//删除LIST
+		RedisWriteUnility.Del("inventory_"+clothId);
+		//再把其余元素重新插入
+		for(String s:inventoryLeft) {
+			RedisWriteUnility.Rpush("inventory_"+clothId, s);
 		}
-		//删除相应库存
-		RedisWriteUnility.Lpop("inventory_"+clothId);
-		RedisWriteUnility.Lpop("inventory_"+clothId);
-		//将记录重新插入LIST
-		while(!stack.isEmpty()) {
-			RedisWriteUnility.Lpush("inventory_"+clothId, stack.pop());
-		}
+		//更改订单信息
 		RedisWriteUnility.Hset("order_"+orderId,"state","发货中");
 		RedisWriteUnility.UnLock();
 		result="订单"+orderId+"配货成功";
@@ -78,7 +84,7 @@ public class UpdateRecordTransacation extends RecordTransacation {
 		//广播通知客户端更新
 		if(!BroadcastHandler.receivers.isEmpty()) {
             for(BroadcastHandler h:BroadcastHandler.receivers) {
-            	String s="record/update/"+orderId+"/"+clothId+"/"+color+"/"+number;
+            	String s="record/update/"+orderId+"/"+clothId+"/"+color+numbers_String;
             	h.message.add(s);
             }
         }

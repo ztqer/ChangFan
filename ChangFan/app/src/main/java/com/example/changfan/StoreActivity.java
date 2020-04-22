@@ -120,6 +120,10 @@ public class StoreActivity extends AbstractActivity implements View.OnClickListe
         //确认订单并通知仓库
         if(v==mainContent_button2){
             ArrayList<ClothWithNumber> arrayList=myAdapter1.Clear();
+            if(arrayList.isEmpty()){
+                Toast.makeText(context,"当前列表为空",Toast.LENGTH_LONG).show();
+                return;
+            }
             //CF（名字缩写）01(门店号)01（仓库号）01（类型标志）00001（编号）
             String id="CF010101";
             String client=leftMenu_editText1.getText().toString();

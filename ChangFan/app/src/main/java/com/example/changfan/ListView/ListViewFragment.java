@@ -39,4 +39,10 @@ public class ListViewFragment<T extends IData> extends Fragment {
     public void AddLine(T data){
         myAdapter.AddLine(data);
     }
+    public ArrayList<T> Clear(){
+        return myAdapter.Clear();
+    }
+    public boolean IsEmpty(){
+        return myAdapter.getCount()==0;
+    }
 }

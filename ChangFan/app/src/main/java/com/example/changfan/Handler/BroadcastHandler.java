@@ -56,6 +56,10 @@ public class BroadcastHandler extends AbstractHandler{
             intent.setAction("reLogin");
             intent.putExtra("username",s.substring(8));
         }
+        //防止管理员用户库存列表更新两次
+        if(tag.equals("root")){
+            return;
+        }
         //数据更新
         if(s.length()>7&&s.substring(0,6).equals("record")){
             intent.setAction("update");
