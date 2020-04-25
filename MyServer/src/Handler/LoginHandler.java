@@ -71,7 +71,7 @@ public class LoginHandler extends AbstractHandler {
             	ArrayList<String> arrayList2=new ArrayList<>();
             	LinkedList<String> linkedList2=new LinkedList<>(MyServer.jedisPool.getResource().lrange("inventory_"+s_2, 0, -1));
             	while(!linkedList2.isEmpty()) {
-            		arrayList2.add(s_2+"/"+linkedList2.pop()+"/"+linkedList2.pop());
+            		arrayList2.add(s_2+"/"+linkedList2.pop()+"/"+linkedList2.pop()+"/"+linkedList2.pop());
             	}
             	arrayList1.add(arrayList2);
             }
