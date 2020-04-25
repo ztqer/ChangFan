@@ -60,6 +60,18 @@
                 android:layout_marginTop="40dp"
                 android:text="完成"
                 android:textSize="30sp" />
+
+            <Button
+                android:id="@+id/WarehouseActivity_MainContent_Button3"
+                android:layout_width="50dp"
+                android:layout_height="50dp"/>
+
+            <Button
+                android:id="@+id/WarehouseActivity_MainContent_Button4"
+                android:layout_alignParentRight="true"
+                android:layout_width="50dp"
+                android:layout_height="50dp"/>
+
         </RelativeLayout>
 
         <RelativeLayout

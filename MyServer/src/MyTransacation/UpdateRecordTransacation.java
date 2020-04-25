@@ -11,6 +11,7 @@ public class UpdateRecordTransacation extends RecordTransacation {
 	private String orderId;
 	private String clothId;
 	private String color;
+	private String unit;
 	private ArrayList<String> numbers=new ArrayList<>();
 	private String numbers_String="";
 	//其余的库存记录
@@ -30,7 +31,8 @@ public class UpdateRecordTransacation extends RecordTransacation {
 		orderId=arrayList.get(0);
 		clothId=arrayList.get(1);
 		color=arrayList.get(2);
-		for(int i=3;i<=arrayList.size()-1;i++) {
+		unit=arrayList.get(3);
+		for(int i=4;i<=arrayList.size()-1;i++) {
 			numbers.add(arrayList.get(i));
 			numbers_String+="/"+arrayList.get(i);
 		}
@@ -40,9 +42,9 @@ public class UpdateRecordTransacation extends RecordTransacation {
 	@Override
 	public void Start() {
 		ArrayList<String> arrayList=new ArrayList<>(MyServer.jedisPool.getResource().lrange("inventory_"+clothId, 0, -1));
-		for(int i=0;i<=arrayList.size()-2;i=i+2) {
+		for(int i=0;i<=arrayList.size()-3;i=i+2) {
     		boolean b=false;
-    		if((!numbers.isEmpty())&&(arrayList.get(i).equals(color))){
+    		if((!numbers.isEmpty())&&(arrayList.get(i).equals(color))&&(arrayList.get(i+2).equals(unit))){
     			for(int j=0;j<=numbers.size()-1;j++) {
     				if(numbers.get(j).equals(arrayList.get(i+1))) {
     					numbers.remove(j);
@@ -54,6 +56,7 @@ public class UpdateRecordTransacation extends RecordTransacation {
     		if(b==false){
 				inventoryLeft.add(arrayList.get(i));
 				inventoryLeft.add(arrayList.get(i+1));
+				inventoryLeft.add(arrayList.get(i+2));
 			}
     	}
     	//存在匹配不到的库存则回滚
@@ -84,7 +87,7 @@ public class UpdateRecordTransacation extends RecordTransacation {
 		//广播通知客户端更新
 		if(!BroadcastHandler.receivers.isEmpty()) {
             for(BroadcastHandler h:BroadcastHandler.receivers) {
-            	String s="record/update/"+orderId+"/"+clothId+"/"+color+numbers_String;
+            	String s="record/update/"+orderId+"/"+clothId+"/"+color+"/"+unit+numbers_String;
             	h.message.add(s);
             }
         }

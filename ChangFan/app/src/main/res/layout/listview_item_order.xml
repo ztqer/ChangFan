@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ListViewItem_Order"
+    android:orientation="horizontal" 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/ListViewItem_Order_TextView1"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="订单号"
+        android:textSize="30sp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/ListViewItem_Order_TextView2"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="货号"
+        android:textSize="30sp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/ListViewItem_Order_TextView3"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="颜色"
+        android:textSize="30sp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/ListViewItem_Order_TextView4"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="数量"
+        android:textSize="30sp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/ListViewItem_Order_TextView5"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="单价"
+        android:textSize="30sp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/ListViewItem_Order_TextView6"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="客户"
+        android:textSize="30sp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/ListViewItem_Order_TextView7"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="日期"
+        android:textSize="30sp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/ListViewItem_Order_TextView8"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="状态"
+        android:textSize="30sp"
+        android:gravity="center"/>
+
+</LinearLayout>

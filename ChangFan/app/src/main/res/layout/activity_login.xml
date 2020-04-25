@@ -7,7 +7,7 @@
     
     <TextView
         android:id="@+id/LoginActivity_textView1"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:layout_marginLeft="70dp"
         android:layout_marginTop="150dp"
@@ -16,7 +16,7 @@
 
     <TextView
         android:id="@+id/LoginActivity_textView2"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:layout_below="@id/LoginActivity_textView1"
         android:layout_marginLeft="70dp"
@@ -56,5 +56,15 @@
         android:layout_marginTop="380dp"
         android:text="注册"
         android:textSize="30sp" />
+
+    <CheckBox
+        android:id="@+id/LoginActivity_CheckBox1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:layout_below="@id/LoginActivity_editText2"
+        android:text="记住账号密码"
+        android:textSize="20sp"/>
 
 </RelativeLayout>

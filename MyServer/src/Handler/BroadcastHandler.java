@@ -38,7 +38,6 @@ public class BroadcastHandler extends AbstractHandler{
 					try {
 						Thread.sleep(1000);
 						count++;
-						continue;
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}

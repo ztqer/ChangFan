@@ -10,6 +10,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -17,13 +19,17 @@ import com.example.changfan.BackstageService.RootDialogService;
 import com.example.changfan.Handler.LoginHandler;
 import com.example.changfan.Handler.OrderHandler;
 import com.example.changfan.Handler.RegisterHandler;
-
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class LoginActivity extends Activity implements View.OnClickListener {
     private Context context;
     private Button button1,button2;
     private EditText editText1,editText2;
+    private CheckBox checkBox1;
+    private boolean needRemember;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,39 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         button2.setOnClickListener(this);
         editText1=findViewById(R.id.LoginActivity_editText1);
         editText2=findViewById(R.id.LoginActivity_editText2);
+        checkBox1=findViewById(R.id.LoginActivity_CheckBox1);
+        checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(buttonView==checkBox1){
+                    needRemember=isChecked;
+                }
+            }
+        });
+        //读取文件存储的账号密码
+        try{
+            FileInputStream fis=context.openFileInput("AccountMemento");
+            int lenghth = fis.available();
+            byte[] buffer = new byte[lenghth];
+            fis.read(buffer);
+            String s=new String(buffer, "UTF-8");
+            String username=null;
+            String password=null;
+            for(int i=0;i<=s.length()-1;i++){
+                if(s.charAt(i)=='\r'){
+                    username=s.substring(0,i);
+                    password=s.substring(i+2);
+                    break;
+                }
+            }
+            if(username!=null&&password!=null){
+                editText1.setText(username);
+                editText2.setText(password);
+                checkBox1.setChecked(true);
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     //按钮响应，读取输入信息，尝试登陆与注册
@@ -59,7 +98,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     //开启线程向服务器验证，成功跳转相应的Activity，失败Toast显示原因
-    private void TryLogin(final String username, String password){
+    private void TryLogin(final String username, final String password){
         Handler handler=new Handler(){
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -79,21 +118,21 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         if(which==0){
-                                            MyStartActivity(new Intent(context,StoreActivity.class),username,orders,clothkinds,inventory);
+                                            MyStartActivity(new Intent(context,StoreActivity.class),username,password,orders,clothkinds,inventory);
                                             dialog.dismiss();
                                         }
                                         else if(which==1){
-                                            MyStartActivity(new Intent(context,WarehouseActivity.class),username,orders,clothkinds,inventory);
+                                            MyStartActivity(new Intent(context,WarehouseActivity.class),username,password,orders,clothkinds,inventory);
                                             dialog.dismiss();
                                         }
                                     }
                                 }).create().show();
                     }
                     else if(s2.equals("warehouse")){
-                        MyStartActivity(new Intent(context,WarehouseActivity.class),username,orders,clothkinds,inventory);
+                        MyStartActivity(new Intent(context,WarehouseActivity.class),username,password,orders,clothkinds,inventory);
                     }
                     else if(s2.equals("store")){
-                        MyStartActivity(new Intent(context,StoreActivity.class),username,orders,clothkinds,inventory);
+                        MyStartActivity(new Intent(context,StoreActivity.class),username,password,orders,clothkinds,inventory);
                     }
                 }
                 else {
@@ -131,11 +170,25 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     //跳转activity时传递用户名与库存、订单信息
-    public void MyStartActivity(Intent intent,String username,ArrayList<String> orders,ArrayList<String> clothkinds,ArrayList<ArrayList<String>> inventory) {
+    public void MyStartActivity(Intent intent,String username,String password,ArrayList<String> orders,ArrayList<String> clothkinds,ArrayList<ArrayList<String>> inventory) {
         intent.putExtra("username",username);
         intent.putExtra("orders",orders);
         intent.putExtra("clothkinds",clothkinds);
         intent.putExtra("inventory",inventory);
+        //存储账号密码
+        try {
+            if(needRemember){
+                FileOutputStream fis=context.openFileOutput("AccountMemento",MODE_PRIVATE);
+                String s=username+"\r\n"+password;
+                fis.write(s.getBytes());
+                fis.flush();
+            }
+            else {
+                context.deleteFile("AccountMemento");
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
         startActivity(intent);
     }
 }

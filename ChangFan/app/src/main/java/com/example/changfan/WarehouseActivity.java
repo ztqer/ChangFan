@@ -2,10 +2,14 @@ package com.example.changfan;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -13,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -33,7 +39,7 @@ public class WarehouseActivity extends AbstractActivity implements View.OnClickL
     //主界面控件
     private DrawerLayout drawerLayout;
     private AutoCompleteTextView mainContent_editText1;
-    private Button mainContent_button1,mainContent_button2;
+    private Button mainContent_button1,mainContent_button2,mainContent_button3,mainContent_button4;
     //fragment相关
     private ListViewFragment<Number> nowFragment;
     private HashMap<ClothWithNumber,ListViewFragment<Number>> fragmentHashMap=new HashMap<>();
@@ -65,8 +71,12 @@ public class WarehouseActivity extends AbstractActivity implements View.OnClickL
         mainContent_editText1.setOnClickListener(this);
         mainContent_button1=findViewById(R.id.WarehouseActivity_MainContent_Button1);
         mainContent_button2=findViewById(R.id.WarehouseActivity_MainContent_Button2);
+        mainContent_button3=findViewById(R.id.WarehouseActivity_MainContent_Button3);
+        mainContent_button4=findViewById(R.id.WarehouseActivity_MainContent_Button4);
         mainContent_button1.setOnClickListener(this);
         mainContent_button2.setOnClickListener(this);
+        mainContent_button3.setOnClickListener(this);
+        mainContent_button4.setOnClickListener(this);
         //左侧滑菜单
         leftMemu_listView=findViewById(R.id.WarehouseActivity_LeftMenu_ListView1);
         leftMenu_myAdapter=new MyAdapter<>(R.layout.listview_item_text,orderList,context);
@@ -178,63 +188,68 @@ public class WarehouseActivity extends AbstractActivity implements View.OnClickL
             Connect(new RecordHandler(u,simplyDialogShowHandler));
             return;
         }
+        //展开侧滑菜单
+        if(v==mainContent_button3){
+            drawerLayout.openDrawer(GravityCompat.START);
+            return;
+        }
+        if(v==mainContent_button4){
+            drawerLayout.openDrawer(GravityCompat.END);
+            return;
+        }
         //增加货品或库存的记录
         if(v==rightMenu_button1){
-            Dialog dialog1=setDialogContent("增加新货品",new String[]{"名字","克重","门幅","供货方","材料"}, ClothKind.class);
+            Dialog dialog1=SetDialogContent("增加新货品",new String[]{"名字","克重","门幅","供货方","材料"}, ClothKind.class);
             dialog1.show();
             return;
         }
         if(v==rightMenu_button2){
-            Dialog dialog2=setDialogContent("增加新库存",new String[]{"货品","颜色","数量"},ClothWithNumber.class);
+            Dialog dialog2=SetDialogContent("增加新库存",new String[]{"货品","颜色","单位","数量"},ClothWithNumber.class);
             dialog2.show();
             return;
         }
     }
 
     //动态设置对话框内容
-    private Dialog setDialogContent(String title, String[] strings, final Class type){
+    private Dialog SetDialogContent(String title, String[] strings, final Class type){
         final AlertDialog.Builder builder=new AlertDialog.Builder(context);
         builder.setTitle(title);
-        //创建一个LinerLayout存初始值为String数组内容的EditText，作为Dialog的View
-        LinearLayout linearLayout=new LinearLayout(context);
+        //创建一个LinerLayout存初始值为String数组内容的EditText，并用ScrollView包裹起来作为Dialog的View
+        ScrollView scrollView=new ScrollView(context);
+        final LinearLayout linearLayout=new LinearLayout(context);
+        scrollView.addView(linearLayout);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         final ArrayList<EditText> editTexts=new ArrayList<>();
         for(String s:strings){
-            final EditText editText=new EditText(context);
-            editText.setText(s);
-            //触摸后清空初始内容
-            editText.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    editText.setText("");
-                    return false;//返回false继续OnTouchEvent
-                }
-            });
-            editTexts.add(editText);
-            linearLayout.addView(editText);
+            AddMyEditText(context,s,linearLayout,editTexts);
         }
-        builder.setView(linearLayout);
+        builder.setView(scrollView);
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            //获取所有EditText信息，根据type转化为相应数据使用RecordHandler通信服务器
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                StringBuilder sb=new StringBuilder();
-                //拼接所有EditText信息，根据类型使用RecordHandler通信服务器
+                ArrayList<String> arrayList=new ArrayList<>();
                 for(EditText et:editTexts){
                     if(et.getText().toString().equals("")){
                         Toast.makeText(context,"输入不能为空",Toast.LENGTH_LONG).show();
                         return;
                     }
-                    sb.append(et.getText().toString()+"/");
+                    arrayList.add(et.getText().toString());
                 }
-                sb.deleteCharAt(sb.length()-1);
                 try{
                     if(type==ClothKind.class){
-                        ClothKind ck=ClothKind.GetClothKind(sb.toString());
+                        ClothKind ck=new ClothKind(arrayList.get(0),Double.parseDouble(arrayList.get(1)),Double.parseDouble(arrayList.get(2)),arrayList.get(3),arrayList.get(4));
                         Connect(new RecordHandler(ck,simplyDialogShowHandler));
                     }
                     if(type==ClothWithNumber.class){
-                        ClothWithNumber cwn=ClothWithNumber.GetClothWithNumber(sb.toString());
-                        Connect(new RecordHandler(cwn,simplyDialogShowHandler));
+                        //限制单位格式
+                        if(!(arrayList.get(2).equals("米")||arrayList.get(2).equals("公斤"))){
+                            throw new Exception();
+                        }
+                        for(int i=3;i<=arrayList.size()-1;i++){
+                            ClothWithNumber cwn=new ClothWithNumber(arrayList.get(0),arrayList.get(1),Double.parseDouble(arrayList.get(i)),arrayList.get(2));
+                            Connect(new RecordHandler(cwn,simplyDialogShowHandler));
+                        }
                     }
                 }catch (Exception e){
                     Toast.makeText(context,"输入格式不正确",Toast.LENGTH_LONG).show();
@@ -242,5 +257,41 @@ public class WarehouseActivity extends AbstractActivity implements View.OnClickL
             }
         });
         return builder.create();
+    }
+
+    //生成EditText并完成各种设置
+    private void AddMyEditText(final Context context, String text, final LinearLayout linearLayout, final ArrayList<EditText> editTexts){
+        final EditText editText=new EditText(context);
+        editText.setText(text);
+        //设置数字格式
+        if(text.equals("克重")||text.equals("门幅")||text.equals("数量")){
+            editText.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        }
+        //按下确定键生成新的EditText
+        if(text.equals("数量")){
+            editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if(actionId== EditorInfo.IME_ACTION_DONE){
+                        AddMyEditText(context,"数量",linearLayout,editTexts);
+                    }
+                    return false;
+                }
+            });
+        }
+        //触摸后清空初始内容
+        editText.setOnTouchListener(new View.OnTouchListener() {
+            private boolean isFirst=true;
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(isFirst==true){
+                    editText.setText("");
+                    isFirst=false;
+                }
+                return false;//返回false继续OnTouchEvent
+            }
+        });
+        editTexts.add(editText);
+        linearLayout.addView(editText);
     }
 }

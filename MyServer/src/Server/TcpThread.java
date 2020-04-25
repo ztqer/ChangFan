@@ -37,6 +37,7 @@ public class TcpThread implements Runnable {
 		finally {
 			try {
 				socket.close();
+				System.out.println(address+"-结束连接");
 			} catch (IOException e2) {
 				System.out.println(address+"-关闭socket异常");
 			}

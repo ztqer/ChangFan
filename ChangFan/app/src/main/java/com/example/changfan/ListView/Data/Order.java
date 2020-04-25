@@ -20,7 +20,7 @@ public class Order implements IData {
     //根据字符串生成Order
     public static Order GetOrder(String s){
         //根据斜杠分割字符串
-        String[] order=new String[8];
+        String[] order=new String[9];
         int count=0;
         int begin=0;
         for(int i=0;i<=s.length()-1;i++){
@@ -31,7 +31,7 @@ public class Order implements IData {
             }
         }
         order[count]=s.substring(begin);
-        return new Order(order[0],new ClothWithNumber(order[1],order[2],Double.parseDouble(order[3])),
-                Double.parseDouble(order[4]),order[5],order[6],order[7]);
+        return new Order(order[0],new ClothWithNumber(order[1],order[2],Double.parseDouble(order[3]),order[4]),
+                Double.parseDouble(order[5]),order[6],order[7],order[8]);
     }
 }

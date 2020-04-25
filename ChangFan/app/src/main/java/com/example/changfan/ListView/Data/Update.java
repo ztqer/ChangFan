@@ -28,13 +28,14 @@ public class Update implements IData {
         String orderId=arrayList.get(0);
         String clothId=arrayList.get(1);
         String color=arrayList.get(2);
+        String unit=arrayList.get(3);
         ArrayList<Number> numbers=new ArrayList<>();
         double ds=0d;
-        for(int i=3;i<=arrayList.size()-1;i++) {
+        for(int i=4;i<=arrayList.size()-1;i++) {
             double d=Double.parseDouble(arrayList.get(i));
             numbers.add(new Number(d));
             ds+=d;
         }
-        return new Update(orderId,new ClothWithNumber(clothId,color,ds),numbers);
+        return new Update(orderId,new ClothWithNumber(clothId,color,ds,unit),numbers);
     }
 }

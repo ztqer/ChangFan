@@ -13,8 +13,8 @@ public class StartHandler extends AbstractHandler {
         System.out.println(address+"-收到消息："+s1);
         next=HandlerFactory.getInstance().GetHandler(s1,address);
         String s2=next==null?"拒绝请求":"请继续";
-        System.out.println(address+"-发出消息："+s2);
 	    os.write(s2.getBytes());
 	    os.flush();
+        System.out.println(address+"-发出消息："+s2);
 	}
 }

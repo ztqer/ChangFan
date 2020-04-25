@@ -22,6 +22,8 @@ public class TcpThread implements Runnable {
     public void run(){
         try {
             socket=new Socket(serverIP,serverPort);
+            //设置read超时20s
+            socket.setSoTimeout(20000);
             handler.HandleMessage(socket.getInputStream(), socket.getOutputStream(), buffer);
         } catch (IOException e1) {
             e1.printStackTrace();

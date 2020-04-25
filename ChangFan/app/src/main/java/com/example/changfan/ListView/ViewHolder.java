@@ -35,6 +35,32 @@ public class ViewHolder<T extends IData>{
                 Button button=view.findViewById(R.id.ListViewItem_DeletableText_Button);
                 button.setOnClickListener(new DeleteButtonOnClickListener(myAdapter,data));
                 break;
+            case R.id.ListViewItem_Order:
+                if(data.getClass()== Order.class){
+                    Order o=(Order)data;
+                    TextView textView1=view.findViewById(R.id.ListViewItem_Order_TextView1);
+                    textView1.setText(o.id);
+                    TextView textView2=view.findViewById(R.id.ListViewItem_Order_TextView2);
+                    textView2.setText(o.clothWithNumber.id);
+                    TextView textView3=view.findViewById(R.id.ListViewItem_Order_TextView3);
+                    textView3.setText(o.clothWithNumber.color);
+                    TextView textView4=view.findViewById(R.id.ListViewItem_Order_TextView4);
+                    String s=o.clothWithNumber.number==0?"数量 ":String.valueOf(o.clothWithNumber.number);
+                    textView4.setText(s+o.clothWithNumber.unit);
+                    TextView textView5=view.findViewById(R.id.ListViewItem_Order_TextView5);
+                    if(o.price==0){
+                        textView5.setText("单价");
+                    }
+                    else {
+                        textView5.setText(String.valueOf(o.price));
+                    }
+                    TextView textView6=view.findViewById(R.id.ListViewItem_Order_TextView6);
+                    textView6.setText(o.client);
+                    TextView textView7=view.findViewById(R.id.ListViewItem_Order_TextView7);
+                    textView7.setText(o.date);
+                    TextView textView8=view.findViewById(R.id.ListViewItem_Order_TextView8);
+                    textView8.setText(o.state);
+                }
         }
     }
 
@@ -50,15 +76,15 @@ public class ViewHolder<T extends IData>{
         }
         if(data.getClass()== ClothWithNumber.class){
             ClothWithNumber cwn=(ClothWithNumber)data;
-            return cwn.id+" "+cwn.color+" "+cwn.number;
+            return cwn.id+" "+cwn.color+" "+cwn.number+cwn.unit;
         }
         if(data.getClass()== ClothKind.class){
             ClothKind ck=(ClothKind)data;
-            return ck.id+" "+ck.weight+" "+ck.length+" "+ck.provider+" "+ck.material;
+            return ck.id+" "+ck.weight+"克/平方米 "+ck.length+"米 "+ck.provider+" "+ck.material;
         }
         if(data.getClass()== Order.class){
             Order o=(Order)data;
-            return o.id+" "+o.clothWithNumber.id+" "+o.clothWithNumber.color+" "+o.clothWithNumber.number+" "+ o.price+" "+o.client+" "+o.date+" "+o.state;
+            return o.id+" "+o.clothWithNumber.id+" "+o.clothWithNumber.color+" "+o.clothWithNumber.number+o.clothWithNumber.unit+" "+ o.price+" "+o.client+" "+o.date+" "+o.state;
         }
         return null;
     }

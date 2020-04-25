@@ -3,6 +3,7 @@ package com.example.changfan.Handler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.SocketTimeoutException;
 
 public abstract class AbstractHandler implements IHandler {
     //向服务器验证，通过后调用Work方法

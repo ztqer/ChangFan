@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.changfan.Handler.OrderHandler;
 import com.example.changfan.Handler.RecordHandler;
@@ -24,7 +25,7 @@ public class StoreActivity extends AbstractActivity implements View.OnClickListe
     private DrawerLayout drawerLayout;
     private EditText mainContent_editText2,leftMenu_editText1,leftMenu_editText3;
     private AutoCompleteTextView mainContent_editText1,leftMenu_editText2;
-    private Button mainContent_button1,mainContent_button2;
+    private Button mainContent_button1,mainContent_button2,mainContent_button3,leftMenu_button1;
     //Listview相关
     private ListView mainContent_listView1;
     private MyAdapter<ClothWithNumber> myAdapter1;
@@ -49,8 +50,10 @@ public class StoreActivity extends AbstractActivity implements View.OnClickListe
         mainContent_editText2=findViewById(R.id.StoreActivity_MainContent_EditText2);
         mainContent_button1=findViewById(R.id.StoreActivity_MainContent_Button1);
         mainContent_button2=findViewById(R.id.StoreActivity_MainContent_Button2);
+        mainContent_button3=findViewById(R.id.StoreActivity_MainContent_Button3);
         mainContent_button1.setOnClickListener(this);
         mainContent_button2.setOnClickListener(this);
+        mainContent_button3.setOnClickListener(this);
         //ListView相关
         mainContent_listView1=findViewById(R.id.StoreActivity_MainContent_ListView1);
         myAdapter1=new MyAdapter<>(R.layout.listview_item_deletabletext,new ArrayList<ClothWithNumber>(),context);
@@ -60,6 +63,8 @@ public class StoreActivity extends AbstractActivity implements View.OnClickListe
         leftMenu_editText2=findViewById(R.id.StoreActivity_LeftMenu_EditText2);
         Refresh(null);
         leftMenu_editText3=findViewById(R.id.StoreActivity_LeftMenu_EditText3);
+        leftMenu_button1=findViewById(R.id.StoreActivity_LeftMenu_Button1);
+        leftMenu_button1.setOnClickListener(this);
     }
 
     //更新AutoCompleteTextView的Adapter
@@ -110,7 +115,8 @@ public class StoreActivity extends AbstractActivity implements View.OnClickListe
                         break;
                     }
                 }
-                ClothWithNumber cwn1=new ClothWithNumber(id,color,number);
+                String unit=leftMenu_button1.getText().toString();
+                ClothWithNumber cwn1=new ClothWithNumber(id,color,number,unit);
                 myAdapter1.AddLine(cwn1);
                 mainContent_editText1.setText("");
                 mainContent_editText2.setText("");
@@ -133,13 +139,24 @@ public class StoreActivity extends AbstractActivity implements View.OnClickListe
             String date=simpleDateFormat.format(d);
             for(ClothWithNumber cwn2:arrayList){
                 Order order=new Order(id,cwn2,price,client,date,"库存中");
-                String message=cwn2.id+" "+cwn2.color+" "+cwn2.number+" 需要配货";
+                String message=cwn2.id+" "+cwn2.color+" "+cwn2.number+cwn2.unit+" 需要配货";
                 Connect(new OrderHandler("warehouse",message));
                 Connect(new RecordHandler(order,simplyDialogShowHandler));
             }
             leftMenu_editText1.setText("");
             leftMenu_editText2.setText("");
             leftMenu_editText3.setText("");
+            return;
+        }
+        //展开侧滑菜单
+        if(v==mainContent_button3){
+            drawerLayout.openDrawer(GravityCompat.START);
+            return;
+        }
+        //点击切换数量单位
+        if(v==leftMenu_button1){
+            String s=leftMenu_button1.getText().toString().equals("公斤")?"米":"公斤";
+            leftMenu_button1.setText(s);
             return;
         }
     }

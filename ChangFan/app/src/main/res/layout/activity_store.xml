@@ -79,6 +79,11 @@
                 android:text="确认"
                 android:textSize="30sp" />
 
+            <Button
+                android:id="@+id/StoreActivity_MainContent_Button3"
+                android:layout_width="50dp"
+                android:layout_height="50dp"/>
+
         </RelativeLayout>
 
         <LinearLayout
@@ -128,6 +133,20 @@
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:inputType="numberDecimal"/>
+
+            <TextView
+                android:id="@+id/StoreActivity_LeftMenu_TextView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="单价"
+                android:textSize="20sp"/>
+
+            <Button
+                android:id="@+id/StoreActivity_LeftMenu_Button1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="公斤"
+                android:textSize="20sp"/>
 
         </LinearLayout>
 

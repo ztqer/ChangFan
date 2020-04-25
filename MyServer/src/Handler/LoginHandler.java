@@ -48,7 +48,7 @@ public class LoginHandler extends AbstractHandler {
             for(String s_1:linkedList1) {
             	HashMap<String, String> hashMap1=new HashMap<>(MyServer.jedisPool.getResource().hgetAll("order_"+s_1));
             	String data1=s_1+"/"+hashMap1.get("clothid")+"/"+hashMap1.get("clothcolor")+"/"+hashMap1.get("clothnumber")
-            	+"/"+hashMap1.get("price")+"/"+hashMap1.get("client")+"/"+hashMap1.get("date")+"/"+hashMap1.get("state");
+            	+"/"+hashMap1.get("clothunit")+"/"+hashMap1.get("price")+"/"+hashMap1.get("client")+"/"+hashMap1.get("date")+"/"+hashMap1.get("state");
             	os.write(data1.getBytes());
             	os.flush();
             	//读一个空字节，防止粘包

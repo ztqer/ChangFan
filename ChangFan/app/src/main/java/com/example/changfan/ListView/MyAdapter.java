@@ -54,6 +54,10 @@ public class MyAdapter<T extends IData> extends BaseAdapter {
         return arrayList;
     }
 
+    public ArrayList<T> GetList(){
+        return list;
+    }
+
     //创建一层的view
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

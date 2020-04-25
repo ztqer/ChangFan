@@ -5,7 +5,7 @@ import java.util.HashSet;
 
 public class HandlerFactory {
 	private static final HashSet<AbstractHandlerPool> handlerPools=new HashSet<>();//用HashSet存储所有池
-	private static final int maxNum=10; //设置所有池大小
+	private static final int maxNum=20; //设置所有池大小
 	//直接静态存储所有池(创建新Handler类必须在此添加并在构造函数里加入HashSet）
 	public static final StartHandlerPool startHandlerPool=new StartHandlerPool(maxNum);
 	public static final BroadcastHandlerPool broadcastHandlerPool=new BroadcastHandlerPool(maxNum);

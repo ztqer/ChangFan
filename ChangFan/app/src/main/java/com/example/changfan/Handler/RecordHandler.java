@@ -53,16 +53,16 @@ public class RecordHandler extends AbstractHandler {
         switch (type){
             case "Order":
                 data=type+"/"+order.id+"/"+order.clothWithNumber.id+"/"+order.clothWithNumber.color+"/"+order.clothWithNumber.number
-                    +"/"+order.price+"/"+order.client+"/"+order.date+"/"+order.state;
+                    +"/"+order.clothWithNumber.unit+"/"+order.price+"/"+order.client+"/"+order.date+"/"+order.state;
                 break;
             case "ClothKind":
                 data=type+"/"+clothKind.id+"/"+clothKind.weight+"/"+clothKind.length+"/"+clothKind.provider+"/"+clothKind.material;
                 break;
             case "Inventory":
-                data=type+"/"+clothWithNumber.id+"/"+clothWithNumber.color+"/"+clothWithNumber.number;
+                data=type+"/"+clothWithNumber.id+"/"+clothWithNumber.color+"/"+clothWithNumber.number+"/"+clothWithNumber.unit;
                 break;
             case "Update":
-                data=type+"/"+update.orderId+"/"+update.clothWithNumber.id+"/"+update.clothWithNumber.color;
+                data=type+"/"+update.orderId+"/"+update.clothWithNumber.id+"/"+update.clothWithNumber.color+"/"+update.clothWithNumber.unit;
                 for(Number n:update.numbers){
                     data=data+"/"+n.number;
                 }

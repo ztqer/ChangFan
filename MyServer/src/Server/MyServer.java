@@ -13,7 +13,7 @@ import redis.clients.jedis.JedisPoolConfig;
 
 public class MyServer {
 	//静态资源：线程池、mysql驱动、redis驱动和Handler池
-	public static final ThreadPoolExecutor threadPool=new ThreadPoolExecutor(20, 20, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<Runnable>());
+	public static final ThreadPoolExecutor threadPool=new ThreadPoolExecutor(100, 100, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<Runnable>());
 	public static final MysqlCommunicator sqlCommunicator=new MysqlCommunicator();
 	private static JedisPoolConfig config;
 	static {
@@ -36,11 +36,13 @@ public class MyServer {
         Socket socket;
 		try {
 			while((socket = serverSocket.accept() )!= null) {
+				//设置read超时20s
+				socket.setSoTimeout(20000);
 				TcpThread tcpThread=new TcpThread(socket);
 				threadPool.execute(tcpThread);
 			}
-		} catch (IOException e) {
-			System.out.println("连接异常");
+		} catch (Exception e) {
+			System.out.println("服务器网络异常");
 			e.printStackTrace();
 		}
 	}

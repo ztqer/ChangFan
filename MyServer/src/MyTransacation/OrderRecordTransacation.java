@@ -11,6 +11,7 @@ public class OrderRecordTransacation extends RecordTransacation {
 	private String clothid;
 	private String clothcolor;
 	private String clothnumber;
+	private String clothunit;
 	private String price;
 	private String client;
 	private String date;
@@ -18,7 +19,7 @@ public class OrderRecordTransacation extends RecordTransacation {
 	
 	//解析客户端发来的字符串
 	public OrderRecordTransacation(String data) {
-		String[] strings=new String[8];
+		String[] strings=new String[9];
 		int begin=0;
 		int index=0;
 		for(int i=0;i<=data.length()-2;i++) {
@@ -33,10 +34,11 @@ public class OrderRecordTransacation extends RecordTransacation {
 		clothid=strings[1];
 		clothcolor=strings[2];
 		clothnumber=strings[3];
-		price=strings[4];
-		client=strings[5];
-		date=strings[6];
-		state=strings[7];
+		clothunit=strings[4];
+		price=strings[5];
+		client=strings[6];
+		date=strings[7];
+		state=strings[8];
 	}
 	
 	//根据数据库记录自增补全id编号部分
@@ -60,6 +62,7 @@ public class OrderRecordTransacation extends RecordTransacation {
 		hashMap.put("clothid", clothid);
 		hashMap.put("clothcolor", clothcolor);
 		hashMap.put("clothnumber", clothnumber);
+		hashMap.put("clothunit", clothunit);
 		hashMap.put("price", price);
 		hashMap.put("client", client);
 		hashMap.put("date", date);
@@ -71,7 +74,7 @@ public class OrderRecordTransacation extends RecordTransacation {
 		//广播通知客户端更新
 		if(!BroadcastHandler.receivers.isEmpty()) {
             for(BroadcastHandler h:BroadcastHandler.receivers) {
-            	String s="record/order/"+id+"/"+clothid+"/"+clothcolor+"/"+clothnumber+"/"+price+"/"+client+"/"+date+"/"+state;
+            	String s="record/order/"+id+"/"+clothid+"/"+clothcolor+"/"+clothnumber+"/"+clothunit+"/"+price+"/"+client+"/"+date+"/"+state;
             	h.message.add(s);
             }
         }
