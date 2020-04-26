@@ -32,7 +32,7 @@ public class InventoryFragment extends Fragment implements View.OnClickListener,
     private Button button1,button2,button3;
     //库存列表
     private ExpandableListView expandableListView1;
-    private MyExpandableListAdapter<ClothKind,ClothWithNumber> inventoryListAdapter;
+    private MyExpandableListAdapter inventoryListAdapter;
     //订单列表
     private ListView listView1;
     private MyAdapter<Order> orderListAdapter;
@@ -91,8 +91,22 @@ public class InventoryFragment extends Fragment implements View.OnClickListener,
             }
             childData.add(l);
         }
-        inventoryListAdapter=new MyExpandableListAdapter<>(groupData,childData,getActivity());
+        inventoryListAdapter=new MyExpandableListAdapter(groupData,childData,getActivity());
         expandableListView1.setAdapter(inventoryListAdapter);
+        //展开组会使其他组子ExpandableListView收回，主动控制使其onGroupCollapse方法能达到
+        expandableListView1.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                if(parent.isGroupExpanded(groupPosition)){
+                    parent.collapseGroup(groupPosition);
+                }
+                else {
+                    parent.expandGroup(groupPosition);
+                    inventoryListAdapter.CollapseViews();
+                }
+                return true;
+            }
+        });
         //订单列表
         ArrayList<Order> data=new ArrayList<>();
         for(String s3:orders){
@@ -227,8 +241,8 @@ public class InventoryFragment extends Fragment implements View.OnClickListener,
             for(int i=0;i<=inventoryListAdapter.getGroupCount()-1;i++){
                 ClothKind ck=(ClothKind)inventoryListAdapter.getGroup(i);
                 if(u.clothWithNumber.id.equals(ck.id)){
-                    for(int j=0;j<=inventoryListAdapter.getChildrenCount(i)-1;j++){
-                        ClothWithNumber cwn=(ClothWithNumber) inventoryListAdapter.getChild(i,j);
+                    for(int j=0;j<=inventoryListAdapter.childData.get(i).size()-1;j++){
+                        ClothWithNumber cwn=inventoryListAdapter.childData.get(i).get(j);
                         if((cwn.color.equals(u.clothWithNumber.color)&&(!u.numbers.isEmpty()))){
                             for(Number n:u.numbers){
                                 if(n.number==cwn.number){
@@ -283,7 +297,7 @@ public class InventoryFragment extends Fragment implements View.OnClickListener,
         }
     }
 
-    //长按提供筛选功能
+    //长按订单提供筛选功能
     @Override
     public boolean onLongClick(View v) {
         if(v==button2){

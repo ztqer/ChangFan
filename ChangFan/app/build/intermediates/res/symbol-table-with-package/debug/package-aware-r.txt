@@ -660,6 +660,8 @@ id ListViewFragment_ListView
 id ListViewItem_DeletableText
 id ListViewItem_DeletableText_Button
 id ListViewItem_DeletableText_TextView
+id ListViewItem_ExpandableListView
+id ListViewItem_ExpandableListView_ExpandableListView
 id ListViewItem_Order
 id ListViewItem_Order_TextView1
 id ListViewItem_Order_TextView2
@@ -896,6 +898,7 @@ layout activity_warehouse
 layout fragment_inventory
 layout listview_fragment
 layout listview_item_deletabletext
+layout listview_item_expandablelistview
 layout listview_item_order
 layout listview_item_text
 layout notification_action

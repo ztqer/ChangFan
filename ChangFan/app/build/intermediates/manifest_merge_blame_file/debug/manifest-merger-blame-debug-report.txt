@@ -32,45 +32,44 @@
 20-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:12:9-54
 21        android:supportsRtl="true"
 21-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:13:9-35
-22        android:testOnly="true"
-23        android:theme="@style/AppTheme" >
-23-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:14:9-40
-24        <activity
-24-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:16:9-23:20
-25            android:name="com.example.changfan.LoginActivity"
-25-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:16:19-48
-26            android:screenOrientation="portrait" >
-26-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:17:13-49
-27            <intent-filter>
-27-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:18:13-22:29
-28                <action android:name="android.intent.action.MAIN" />
-28-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:19:17-69
-28-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:19:25-66
-29
-30                <category android:name="android.intent.category.LAUNCHER" />
-30-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:21:17-77
-30-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:21:27-74
-31            </intent-filter>
-32        </activity>
-33        <activity
-33-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:25:9-26:51
-34            android:name="com.example.changfan.WarehouseActivity"
-34-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:25:19-52
-35            android:screenOrientation="portrait" />
-35-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:26:13-49
-36        <activity
-36-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:28:9-29:51
-37            android:name="com.example.changfan.StoreActivity"
-37-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:28:19-48
-38            android:screenOrientation="portrait" />
-38-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:29:13-49
-39
-40        <service android:name="com.example.changfan.BackstageService.ListenToServerService" />
-40-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:31:9-75
-40-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:31:18-72
-41        <service android:name="com.example.changfan.BackstageService.RootDialogService" />
-41-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:32:9-70
-41-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:32:18-68
-42    </application>
-43
-44</manifest>
+22        android:theme="@style/AppTheme" >
+22-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:14:9-40
+23        <activity
+23-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:16:9-23:20
+24            android:name="com.example.changfan.LoginActivity"
+24-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:16:19-48
+25            android:screenOrientation="portrait" >
+25-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:17:13-49
+26            <intent-filter>
+26-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:18:13-22:29
+27                <action android:name="android.intent.action.MAIN" />
+27-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:19:17-69
+27-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:19:25-66
+28
+29                <category android:name="android.intent.category.LAUNCHER" />
+29-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:21:17-77
+29-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:21:27-74
+30            </intent-filter>
+31        </activity>
+32        <activity
+32-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:25:9-26:51
+33            android:name="com.example.changfan.WarehouseActivity"
+33-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:25:19-52
+34            android:screenOrientation="portrait" />
+34-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:26:13-49
+35        <activity
+35-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:28:9-29:51
+36            android:name="com.example.changfan.StoreActivity"
+36-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:28:19-48
+37            android:screenOrientation="portrait" />
+37-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:29:13-49
+38
+39        <service android:name="com.example.changfan.BackstageService.ListenToServerService" />
+39-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:31:9-75
+39-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:31:18-72
+40        <service android:name="com.example.changfan.BackstageService.RootDialogService" />
+40-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:32:9-70
+40-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:32:18-68
+41    </application>
+42
+43</manifest>

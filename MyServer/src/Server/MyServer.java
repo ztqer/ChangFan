@@ -19,6 +19,7 @@ public class MyServer {
 	static {
 		config=new JedisPoolConfig();
 		config.setMaxTotal(1000);
+		config.setMaxWaitMillis(10000);
 	}
 	public static final JedisPool jedisPool=new JedisPool(config);
 	

@@ -68,6 +68,10 @@
         "source": "/Users/mac/.gradle/caches/transforms-2/files-2.1/46da25c3e2ae6308b2227b660caa604d/core-1.0.1/res/drawable/notification_tile_bg.xml"
     },
     {
+        "merged": "/Users/mac/AndroidStudioProjects/ChangFan/app/build/intermediates/res/merged/debug/layout_listview_item_expandablelistview.xml.flat",
+        "source": "/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/res/layout/listview_item_expandablelistview.xml"
+    },
+    {
         "merged": "/Users/mac/AndroidStudioProjects/ChangFan/app/build/intermediates/res/merged/debug/mipmap-hdpi_ic_launcher_round.png.flat",
         "source": "/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/res/mipmap-hdpi/ic_launcher_round.png"
     },
@@ -392,12 +396,12 @@
         "source": "/Users/mac/.gradle/caches/transforms-2/files-2.1/dfb17c32c9e1bced7bb89f3e844a7607/appcompat-1.0.2/res/drawable-xxxhdpi-v4/abc_ic_menu_cut_mtrl_alpha.png"
     },
     {
-        "merged": "/Users/mac/AndroidStudioProjects/ChangFan/app/build/intermediates/res/merged/debug/drawable-mdpi-v4_abc_list_divider_mtrl_alpha.9.png.flat",
-        "source": "/Users/mac/.gradle/caches/transforms-2/files-2.1/dfb17c32c9e1bced7bb89f3e844a7607/appcompat-1.0.2/res/drawable-mdpi-v4/abc_list_divider_mtrl_alpha.9.png"
-    },
-    {
         "merged": "/Users/mac/AndroidStudioProjects/ChangFan/app/build/intermediates/res/merged/debug/anim_abc_shrink_fade_out_from_bottom.xml.flat",
         "source": "/Users/mac/.gradle/caches/transforms-2/files-2.1/dfb17c32c9e1bced7bb89f3e844a7607/appcompat-1.0.2/res/anim/abc_shrink_fade_out_from_bottom.xml"
+    },
+    {
+        "merged": "/Users/mac/AndroidStudioProjects/ChangFan/app/build/intermediates/res/merged/debug/drawable-mdpi-v4_abc_list_divider_mtrl_alpha.9.png.flat",
+        "source": "/Users/mac/.gradle/caches/transforms-2/files-2.1/dfb17c32c9e1bced7bb89f3e844a7607/appcompat-1.0.2/res/drawable-mdpi-v4/abc_list_divider_mtrl_alpha.9.png"
     },
     {
         "merged": "/Users/mac/AndroidStudioProjects/ChangFan/app/build/intermediates/res/merged/debug/drawable-xhdpi-v4_abc_textfield_search_default_mtrl_alpha.9.png.flat",
