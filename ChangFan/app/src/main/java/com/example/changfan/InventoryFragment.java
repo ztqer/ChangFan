@@ -330,11 +330,14 @@ public class InventoryFragment extends Fragment implements View.OnClickListener,
                 AlertDialog.Builder _builder=new AlertDialog.Builder(getActivity());
                 Dialog _dialog;
                 final String[] choices;
-                choices=new String[]{"客户","货号","状态"};
+                choices=new String[]{"客户","货号","状态","订单号"};
                 _dialog=_builder.setSingleChoiceItems(choices, 0, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         textView.setText(choices[which]);
+                        if(textView.getText().toString().equals("订单号")){
+                            editText.setText("CF0101XX");
+                        }
                         dialog.dismiss();
                     }
                 }).create();
@@ -366,6 +369,11 @@ public class InventoryFragment extends Fragment implements View.OnClickListener,
                     }
                     if(type.equals("状态")){
                         if(o.state.equals(value)){
+                            newOrders.add(o);
+                        }
+                    }
+                    if(type.equals("订单号")){
+                        if(o.id.substring(8).equals(value.substring(8))){
                             newOrders.add(o);
                         }
                     }

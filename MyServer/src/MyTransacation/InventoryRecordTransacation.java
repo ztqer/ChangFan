@@ -3,6 +3,7 @@ package MyTransacation;
 import Handler.BroadcastHandler;
 import Server.MyServer;
 import Server.RedisWriteUnility;
+import redis.clients.jedis.Jedis;
 
 public class InventoryRecordTransacation extends RecordTransacation {
 	//库存信息（一匹布）
@@ -33,9 +34,11 @@ public class InventoryRecordTransacation extends RecordTransacation {
 	//防止不存在货号却有库存
 	@Override
 	public void Start() {
-		if(!MyServer.jedisPool.getResource().sismember("clothkind", id)) {
+		Jedis jedis=MyServer.jedisPool.getResource();
+		if(!jedis.sismember("clothkind", id)) {
 			Rollback();
 		}
+		jedis.close();
 	}
 
 	//向LIST inventory_具体的id 插入两条记录，分别代表颜色和数量

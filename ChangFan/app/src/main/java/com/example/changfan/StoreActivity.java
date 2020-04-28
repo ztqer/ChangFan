@@ -131,13 +131,20 @@ public class StoreActivity extends AbstractActivity implements View.OnClickListe
                 return;
             }
             //CF（名字缩写）01(门店号)01（仓库号）01（类型标志）00001（编号）
-            String id="CF010101";
+            String id="CF0101";
             String client=leftMenu_editText1.getText().toString();
             double price=Double.parseDouble(leftMenu_editText3.getText().toString());
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
             Date d= new Date(System.currentTimeMillis());
             String date=simpleDateFormat.format(d);
+            int i=1;
             for(ClothWithNumber cwn2:arrayList){
+                if(i<10){
+                    id+="0"+String.valueOf(i);
+                }
+                else {
+                    id+=String.valueOf(i);
+                }
                 Order order=new Order(id,cwn2,price,client,date,"库存中");
                 String message=cwn2.id+" "+cwn2.color+" "+cwn2.number+cwn2.unit+" 需要配货";
                 Connect(new OrderHandler("warehouse",message));

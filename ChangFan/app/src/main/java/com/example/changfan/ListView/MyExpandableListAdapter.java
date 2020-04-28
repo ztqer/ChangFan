@@ -8,6 +8,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import com.example.changfan.ListView.Data.ClothKind;
 import com.example.changfan.ListView.Data.ClothWithNumber;
+import com.example.changfan.ListView.Data.ClothWithNumber_Count;
+import com.example.changfan.ListView.Data.Number;
 import com.example.changfan.R;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -18,6 +20,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     public ArrayList<ArrayList<ClothWithNumber>> childData;
     private Context context;
     private LinkedList<ExpandableListView> expandedViews=new LinkedList<>();
+    private LinkedList<ChildExpanableListAdapter> childrenAdapters=new LinkedList<>();
 
     //构造传递数据和context进来
     public MyExpandableListAdapter(ArrayList<ClothKind> groupData, ArrayList<ArrayList<ClothWithNumber>> childData, Context context){
@@ -55,7 +58,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         groupData.add(data);
         childCount.add(new ArrayList<ClothWithNumber>());
         childData.add(new ArrayList<ClothWithNumber>());
-        notifyDataSetChanged();
+        MyNotifyDataSetChanged();
     }
 
     public void AddChild(int groupPosition,ClothWithNumber data){
@@ -71,7 +74,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
             }
         }
         childData.get(groupPosition).add(data);
-        notifyDataSetChanged();
+        MyNotifyDataSetChanged();
     }
 
     public void RemoveChild(int groupPosition,int childPosition){
@@ -86,7 +89,15 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
             }
         }
         childData.get(groupPosition).remove(childPosition);
+        MyNotifyDataSetChanged();
+    }
+
+    //通知子ExpandableView一同更新
+    private void MyNotifyDataSetChanged(){
         notifyDataSetChanged();
+        for(ChildExpanableListAdapter adapter:childrenAdapters){
+            adapter.notifyDataSetChanged();
+        }
     }
 
     //重写的几个方法，直接影响getXXXView，以childCount为子元素
@@ -145,6 +156,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         final ExpandableListView expandableListView=convertView.findViewById(R.id.ListViewItem_ExpandableListView_ExpandableListView);
         final ChildExpanableListAdapter adapter=new ChildExpanableListAdapter(childCount.get(groupPosition).get(childPosition),childData.get(groupPosition));
         expandableListView.setAdapter(adapter);
+        childrenAdapters.add(adapter);
         convertView.measure(0,0);
         final int h=convertView.getMeasuredHeight();
         //监听展开和收回，调整高度
@@ -169,7 +181,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     private void AdjustHeight(int orginalHeight,ExpandableListView expandableListView,ChildExpanableListAdapter adapter,boolean isAdd){
         ViewGroup.LayoutParams layoutParams=expandableListView.getLayoutParams();
         int count=adapter.getChildrenCount(0);
-        int h=orginalHeight+expandableListView.getDividerHeight()*(count+1);
+        int h=orginalHeight*2+expandableListView.getDividerHeight()*(count+1);
         for(int i=0;i<=count-1;i++){
             if(i==count-1){
                 adapter.getChildView(0,i,true,null,expandableListView);
@@ -225,7 +237,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
                 convertView = LayoutInflater.from(context).inflate(R.layout.listview_item_text, parent, false);
             }
             convertView.setPadding(100,0,0,0);
-            viewHolder=new ViewHolder(null,convertView,group);
+            viewHolder=new ViewHolder(null,convertView,new ClothWithNumber_Count(group,newChild.size()));
             return convertView;
         }
 
@@ -237,7 +249,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
                 convertView = LayoutInflater.from(context).inflate(R.layout.listview_item_text, parent, false);
             }
             convertView.setPadding(200,0,0,0);
-            viewHolder=new ViewHolder(null,convertView,newChild.get(childPosition));
+            viewHolder=new ViewHolder(null,convertView,new Number(newChild.get(childPosition).number));
             convertView.measure(0,0);
             childrenHeight[childPosition]=convertView.getMeasuredHeight();
             return convertView;

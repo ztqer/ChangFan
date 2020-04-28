@@ -40,6 +40,7 @@ public class WarehouseActivity extends AbstractActivity implements View.OnClickL
     private DrawerLayout drawerLayout;
     private AutoCompleteTextView mainContent_editText1;
     private Button mainContent_button1,mainContent_button2,mainContent_button3,mainContent_button4;
+    private TextView mainContent_textView1;
     //fragment相关
     private ListViewFragment<Number> nowFragment;
     private HashMap<ClothWithNumber,ListViewFragment<Number>> fragmentHashMap=new HashMap<>();
@@ -77,6 +78,7 @@ public class WarehouseActivity extends AbstractActivity implements View.OnClickL
         mainContent_button2.setOnClickListener(this);
         mainContent_button3.setOnClickListener(this);
         mainContent_button4.setOnClickListener(this);
+        mainContent_textView1=findViewById(R.id.WarehouseActivity_MainContent_TextView1);
         //左侧滑菜单
         leftMemu_listView=findViewById(R.id.WarehouseActivity_LeftMenu_ListView1);
         leftMenu_myAdapter=new MyAdapter<>(R.layout.listview_item_text,orderList,context);
@@ -102,6 +104,7 @@ public class WarehouseActivity extends AbstractActivity implements View.OnClickL
                 }
                 nowFragment=fragment;
                 drawerLayout.closeDrawer(GravityCompat.START);
+                mainContent_textView1.setText(orderList.get(position).id+" "+orderList.get(position).color+" "+orderList.get(position).number+orderList.get(position).unit);
             }
         });
         //右侧滑菜单
@@ -186,6 +189,7 @@ public class WarehouseActivity extends AbstractActivity implements View.OnClickL
             ClothWithNumber cwn=(ClothWithNumber) nowFragment.representative;
             Update u=new Update(orderid.get(cwn),cwn,nowFragment.Clear());
             Connect(new RecordHandler(u,simplyDialogShowHandler));
+            mainContent_textView1.setText("");
             return;
         }
         //展开侧滑菜单
@@ -204,7 +208,7 @@ public class WarehouseActivity extends AbstractActivity implements View.OnClickL
             return;
         }
         if(v==rightMenu_button2){
-            Dialog dialog2=SetDialogContent("增加新库存",new String[]{"货品","颜色","单位","数量"},ClothWithNumber.class);
+            Dialog dialog2=SetDialogContent("增加新库存",new String[]{"货品","颜色","单位（米/公斤）","数量"},ClothWithNumber.class);
             dialog2.show();
             return;
         }
@@ -261,7 +265,20 @@ public class WarehouseActivity extends AbstractActivity implements View.OnClickL
 
     //生成EditText并完成各种设置
     private void AddMyEditText(final Context context, String text, final LinearLayout linearLayout, final ArrayList<EditText> editTexts){
-        final EditText editText=new EditText(context);
+        final EditText editText;
+        //货品设置为AutoCompleteTextView（其继承于EditText，不影响别处使用）
+        if(text.equals("货品")){
+            ArrayList<String> arrayList=new ArrayList<>();
+            for(InventoryFragment.TotalOfClothKind kind:inventoryFragment.kinds){
+                arrayList.add(kind.id);
+            }
+            editText=new AutoCompleteTextView(context);
+            AutoCompleteTextView actv=(AutoCompleteTextView)editText;
+            actv.setAdapter(new ArrayAdapter<String>(context,android.R.layout.simple_dropdown_item_1line,arrayList));
+        }
+        else {
+            editText=new EditText(context);
+        }
         editText.setText(text);
         //设置数字格式
         if(text.equals("克重")||text.equals("门幅")||text.equals("数量")){

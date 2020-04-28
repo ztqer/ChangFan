@@ -14,6 +14,7 @@ public class UpdateRecordTransacation extends RecordTransacation {
 	private String unit;
 	private ArrayList<String> numbers=new ArrayList<>();
 	private String numbers_String="";
+	private double numberCount=0d;
 	//其余的库存记录
 	private ArrayList<String> inventoryLeft=new ArrayList<>();
 	
@@ -35,6 +36,7 @@ public class UpdateRecordTransacation extends RecordTransacation {
 		for(int i=4;i<=arrayList.size()-1;i++) {
 			numbers.add(arrayList.get(i));
 			numbers_String+="/"+arrayList.get(i);
+			numberCount+=Double.parseDouble(arrayList.get(i));
 		}
 	}
 	
@@ -81,6 +83,7 @@ public class UpdateRecordTransacation extends RecordTransacation {
 		}
 		//更改订单信息
 		RedisWriteUnility.Hset("order_"+orderId,"state","发货中");
+		RedisWriteUnility.Hset("order_"+orderId, "clothnumber", String.valueOf(numberCount));
 		RedisWriteUnility.UnLock();
 		result="订单"+orderId+"配货成功";
 		System.out.println(result);

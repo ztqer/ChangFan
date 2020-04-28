@@ -6,10 +6,13 @@ import android.widget.TextView;
 import com.example.changfan.ListView.Data.Cloth;
 import com.example.changfan.ListView.Data.ClothKind;
 import com.example.changfan.ListView.Data.ClothWithNumber;
+import com.example.changfan.ListView.Data.ClothWithNumber_Count;
 import com.example.changfan.ListView.Data.IData;
 import com.example.changfan.ListView.Data.Number;
 import com.example.changfan.ListView.Data.Order;
 import com.example.changfan.R;
+
+import java.text.DecimalFormat;
 
 //存储ListView的一行数据
 public class ViewHolder<T extends IData>{
@@ -66,6 +69,7 @@ public class ViewHolder<T extends IData>{
 
     //反射比较范型，获取数据
     private String GetText(T data){
+        DecimalFormat decimalFormat=new DecimalFormat("0.000");
         if(data.getClass()== Number.class){
             Number n=(Number)data;
             return String.valueOf(n.number);
@@ -76,7 +80,7 @@ public class ViewHolder<T extends IData>{
         }
         if(data.getClass()== ClothWithNumber.class){
             ClothWithNumber cwn=(ClothWithNumber)data;
-            return cwn.id+" "+cwn.color+" "+cwn.number+cwn.unit;
+            return cwn.id+" "+cwn.color+" "+decimalFormat.format(cwn.number)+cwn.unit;
         }
         if(data.getClass()== ClothKind.class){
             ClothKind ck=(ClothKind)data;
@@ -84,7 +88,11 @@ public class ViewHolder<T extends IData>{
         }
         if(data.getClass()== Order.class){
             Order o=(Order)data;
-            return o.id+" "+o.clothWithNumber.id+" "+o.clothWithNumber.color+" "+o.clothWithNumber.number+o.clothWithNumber.unit+" "+ o.price+" "+o.client+" "+o.date+" "+o.state;
+            return o.id+" "+o.client+" "+o.clothWithNumber.id+" "+o.clothWithNumber.color+" "+decimalFormat.format(o.clothWithNumber.number)+o.clothWithNumber.unit+" "+ o.price+" "+o.date+" "+o.state;
+        }
+        if(data.getClass()== ClothWithNumber_Count.class){
+            ClothWithNumber_Count cwnc=(ClothWithNumber_Count)data;
+            return cwnc.clothWithNumber.id+" "+cwnc.clothWithNumber.color+" "+cwnc.count+"匹 "+decimalFormat.format(cwnc.clothWithNumber.number)+cwnc.clothWithNumber.unit;
         }
         return null;
     }

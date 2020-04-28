@@ -15,6 +15,14 @@
         android:gravity="center"/>
 
     <TextView
+        android:id="@+id/ListViewItem_Order_TextView6"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="客户"
+        android:textSize="30sp"
+        android:gravity="center"/>
+
+    <TextView
         android:id="@+id/ListViewItem_Order_TextView2"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -43,14 +51,6 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="单价"
-        android:textSize="30sp"
-        android:gravity="center"/>
-
-    <TextView
-        android:id="@+id/ListViewItem_Order_TextView6"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="客户"
         android:textSize="30sp"
         android:gravity="center"/>
 

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import Handler.BroadcastHandler;
 import Server.MyServer;
 import Server.RedisWriteUnility;
+import redis.clients.jedis.Jedis;
 
 public class OrderRecordTransacation extends RecordTransacation {
 	//订单信息
@@ -44,8 +45,15 @@ public class OrderRecordTransacation extends RecordTransacation {
 	//根据数据库记录自增补全id编号部分
 	@Override
 	public void Start() {
-		String s=MyServer.jedisPool.getResource().lindex("order", -1);
-		String n=String.valueOf(Integer.parseInt(s.substring(8))+1);
+		Jedis jedis=MyServer.jedisPool.getResource();
+		String s=jedis.lindex("order", -1);
+		jedis.close();
+		int index=Integer.parseInt(s.substring(8));
+		//编号第七位为2表示与上订单为同一批，编号不变
+		if(id.charAt(7)=='1') {
+			index++;
+		}
+		String n=String.valueOf(index+1);
 		int num=5-n.length();
 		for(int i=1;i<=num;i++) {
 			n="0"+n;

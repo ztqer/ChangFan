@@ -21,6 +21,7 @@ public class MyServer {
 		config.setMaxTotal(1000);
 		config.setMaxWaitMillis(10000);
 	}
+	//使用Jedis jedis=jedisPool.getRecource(),并用jedis.close()释放资源
 	public static final JedisPool jedisPool=new JedisPool(config);
 	
 	public static void main(String[] args){
