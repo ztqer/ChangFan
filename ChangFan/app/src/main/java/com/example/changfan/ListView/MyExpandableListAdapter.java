@@ -1,6 +1,7 @@
 package com.example.changfan.ListView;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -157,20 +158,18 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         final ChildExpanableListAdapter adapter=new ChildExpanableListAdapter(childCount.get(groupPosition).get(childPosition),childData.get(groupPosition));
         expandableListView.setAdapter(adapter);
         childrenAdapters.add(adapter);
-        convertView.measure(0,0);
-        final int h=convertView.getMeasuredHeight();
         //监听展开和收回，调整高度
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
-                AdjustHeight(h,expandableListView,adapter,true);
+                AdjustHeight(expandableListView,adapter,true);
                 expandedViews.add(expandableListView);
             }
         });
         expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
             @Override
             public void onGroupCollapse(int groupPosition) {
-                AdjustHeight(h,expandableListView,adapter,false);
+                AdjustHeight(expandableListView,adapter,false);
                 expandedViews.remove(expandableListView);
             }
         });
@@ -178,10 +177,10 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     //计算高度并调整容器布局
-    private void AdjustHeight(int orginalHeight,ExpandableListView expandableListView,ChildExpanableListAdapter adapter,boolean isAdd){
+    private void AdjustHeight(ExpandableListView expandableListView,ChildExpanableListAdapter adapter,boolean isAdd){
         ViewGroup.LayoutParams layoutParams=expandableListView.getLayoutParams();
         int count=adapter.getChildrenCount(0);
-        int h=orginalHeight*2+expandableListView.getDividerHeight()*(count+1);
+        int h=adapter.groupHeight*2+expandableListView.getDividerHeight()*(count+1);
         for(int i=0;i<=count-1;i++){
             if(i==count-1){
                 adapter.getChildView(0,i,true,null,expandableListView);
@@ -214,13 +213,12 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
     public class ChildExpanableListAdapter extends BaseExpandableListAdapter{
         private ClothWithNumber group;
-        private ArrayList<ClothWithNumber> child;
         private ArrayList<ClothWithNumber> newChild;
         private int[] childrenHeight;
+        private int groupHeight;
 
         public ChildExpanableListAdapter(ClothWithNumber group,ArrayList<ClothWithNumber> child){
             this.group=group;
-            this.child=child;
             newChild=new ArrayList<>();
             for(ClothWithNumber cwn2:child){
                 if(cwn2.id.equals(group.id)&&cwn2.color.equals(group.color)&&cwn2.unit.equals(group.unit)){
@@ -238,6 +236,9 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
             }
             convertView.setPadding(100,0,0,0);
             viewHolder=new ViewHolder(null,convertView,new ClothWithNumber_Count(group,newChild.size()));
+            //此处测量高度仍不对，暂时无法解决
+            convertView.measure(0,0);
+            groupHeight=convertView.getMeasuredHeight();
             return convertView;
         }
 

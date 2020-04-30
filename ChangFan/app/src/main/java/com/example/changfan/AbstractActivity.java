@@ -3,6 +3,7 @@ package com.example.changfan;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
@@ -38,6 +39,7 @@ public abstract class AbstractActivity extends FragmentActivity {
     private IntentFilter serviceMessageIntentFilter;
     //用于子线程显示服务器通信结果
     protected Handler simplyDialogShowHandler;
+    private Dialog simplyDialog;
 
     //销毁时停止Service与BroadcastReceiver，防止内存泄露
     @Override
@@ -76,10 +78,18 @@ public abstract class AbstractActivity extends FragmentActivity {
             @Override
             public void handleMessage(@NonNull Message msg) {
                 String message=msg.getData().getString("result");
-                Dialog dialog=new AlertDialog.Builder(context).setMessage(message)
-                        .setPositiveButton("确定",null)
-                        .create();
-                dialog.show();
+                //多个消息只显示一个对话框
+                if(simplyDialog==null){
+                    simplyDialog=new AlertDialog.Builder(context).setMessage(message)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    simplyDialog=null;
+                                }
+                            })
+                            .create();
+                    simplyDialog.show();
+                }
             }
         };
         //初始化ViewPager并把库存的Fragment和当前activity一同放入其中

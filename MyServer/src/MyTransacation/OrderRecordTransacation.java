@@ -49,11 +49,11 @@ public class OrderRecordTransacation extends RecordTransacation {
 		String s=jedis.lindex("order", -1);
 		jedis.close();
 		int index=Integer.parseInt(s.substring(8));
-		//编号第七位为2表示与上订单为同一批，编号不变
+		//编号第七位不为1表示与上订单为同一批，编号不变
 		if(id.charAt(7)=='1') {
 			index++;
 		}
-		String n=String.valueOf(index+1);
+		String n=String.valueOf(index);
 		int num=5-n.length();
 		for(int i=1;i<=num;i++) {
 			n="0"+n;

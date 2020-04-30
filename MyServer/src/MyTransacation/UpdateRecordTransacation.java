@@ -5,6 +5,7 @@ import java.util.Stack;
 import Handler.BroadcastHandler;
 import Server.MyServer;
 import Server.RedisWriteUnility;
+import redis.clients.jedis.Jedis;
 
 public class UpdateRecordTransacation extends RecordTransacation {
 	//信息订单号和相应的库存
@@ -43,8 +44,9 @@ public class UpdateRecordTransacation extends RecordTransacation {
 	//查询相应库存的位置
 	@Override
 	public void Start() {
-		ArrayList<String> arrayList=new ArrayList<>(MyServer.jedisPool.getResource().lrange("inventory_"+clothId, 0, -1));
-		for(int i=0;i<=arrayList.size()-3;i=i+2) {
+		Jedis jedis=MyServer.jedisPool.getResource();
+		ArrayList<String> arrayList=new ArrayList<>(jedis.lrange("inventory_"+clothId, 0, -1));
+		for(int i=0;i<=arrayList.size()-3;i=i+3) {
     		boolean b=false;
     		if((!numbers.isEmpty())&&(arrayList.get(i).equals(color))&&(arrayList.get(i+2).equals(unit))){
     			for(int j=0;j<=numbers.size()-1;j++) {
@@ -65,6 +67,7 @@ public class UpdateRecordTransacation extends RecordTransacation {
     	if(!numbers.isEmpty()) {
     		Rollback();
     	}
+    	jedis.close();
 	}
 
 	//向LIST inventory_具体的id 删除相应的库存，并更改HASH order_具体的id state值

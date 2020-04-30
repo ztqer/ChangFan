@@ -114,7 +114,7 @@ public class WarehouseActivity extends AbstractActivity implements View.OnClickL
         rightMenu_button2.setOnClickListener(this);
     }
 
-    //收到订单信息后解析并更新
+    //收到信息后解析并更新
     @Override
     public void Refresh(IData data) {
         if(data.getClass()==Order.class){
@@ -129,6 +129,7 @@ public class WarehouseActivity extends AbstractActivity implements View.OnClickL
             Update u=(Update)data;
             for(ClothWithNumber cwn:orderList){
                 if(orderid.get(cwn).equals(u.orderId)){
+                    //向门店发出通知
                     String message=orderid.get(cwn)+" "+cwn.id+" "+cwn.color+" "+cwn.number+" 已完成配货";
                     OrderHandler orderHandler=new OrderHandler("store",message);
                     Connect(orderHandler);

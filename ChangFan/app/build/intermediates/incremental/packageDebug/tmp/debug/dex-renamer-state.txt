@@ -1,4 +1,4 @@
-#Tue Apr 28 13:48:37 CST 2020
+#Thu Apr 30 17:08:42 CST 2020
 base.0=/Users/mac/AndroidStudioProjects/ChangFan/app/build/intermediates/dex/debug/mergeExtDexDebug/out/classes.dex
 path.1=classes.dex
 renamed.1=classes2.dex

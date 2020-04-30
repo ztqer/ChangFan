@@ -19,6 +19,7 @@ import com.example.changfan.ListView.MyAdapter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class StoreActivity extends AbstractActivity implements View.OnClickListener {
     //主界面控件
@@ -29,6 +30,7 @@ public class StoreActivity extends AbstractActivity implements View.OnClickListe
     //Listview相关
     private ListView mainContent_listView1;
     private MyAdapter<ClothWithNumber> myAdapter1;
+    private HashMap<ClothWithNumber,Double> priceMap=new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +106,7 @@ public class StoreActivity extends AbstractActivity implements View.OnClickListe
                 String id=leftMenu_editText2.getText().toString();
                 String color=mainContent_editText1.getText().toString();
                 double number=Double.parseDouble(mainContent_editText2.getText().toString());
+                double price=Double.parseDouble(leftMenu_editText3.getText().toString());
                 for(InventoryFragment.TotalOfClothKind kind:inventoryFragment.kinds){
                     if(kind.id.equals(id)){
                         for(InventoryFragment.NumbersOfColor c:kind.colors){
@@ -118,8 +121,10 @@ public class StoreActivity extends AbstractActivity implements View.OnClickListe
                 String unit=leftMenu_button1.getText().toString();
                 ClothWithNumber cwn1=new ClothWithNumber(id,color,number,unit);
                 myAdapter1.AddLine(cwn1);
+                priceMap.put(cwn1,price);
                 mainContent_editText1.setText("");
                 mainContent_editText2.setText("");
+                leftMenu_editText1.setEnabled(false);
             }
             return;
         }
@@ -131,28 +136,35 @@ public class StoreActivity extends AbstractActivity implements View.OnClickListe
                 return;
             }
             //CF（名字缩写）01(门店号)01（仓库号）01（类型标志）00001（编号）
-            String id="CF0101";
             String client=leftMenu_editText1.getText().toString();
-            double price=Double.parseDouble(leftMenu_editText3.getText().toString());
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
             Date d= new Date(System.currentTimeMillis());
             String date=simpleDateFormat.format(d);
+            //同一客户的订单，编号部分不变，类型标志递增
             int i=1;
+            String priceString="";
             for(ClothWithNumber cwn2:arrayList){
+                String id="CF0101";
                 if(i<10){
                     id+="0"+String.valueOf(i);
                 }
                 else {
                     id+=String.valueOf(i);
                 }
-                Order order=new Order(id,cwn2,price,client,date,"库存中");
+                i++;
+                Order order=new Order(id,cwn2,priceMap.get(cwn2),client,date,"库存中");
                 String message=cwn2.id+" "+cwn2.color+" "+cwn2.number+cwn2.unit+" 需要配货";
                 Connect(new OrderHandler("warehouse",message));
                 Connect(new RecordHandler(order,simplyDialogShowHandler));
+                priceString+="/"+priceMap.get(cwn2);
             }
+            //通知打印机控制
+            Connect(new OrderHandler("print",client+"/"+String.valueOf(i-1)+priceString));
             leftMenu_editText1.setText("");
             leftMenu_editText2.setText("");
             leftMenu_editText3.setText("");
+            leftMenu_editText1.setEnabled(true);
+            priceMap.clear();
             return;
         }
         //展开侧滑菜单
