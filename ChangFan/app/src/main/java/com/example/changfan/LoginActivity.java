@@ -1,27 +1,37 @@
 package com.example.changfan;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import com.example.changfan.BackstageService.RootDialogService;
 import com.example.changfan.Handler.LoginHandler;
 import com.example.changfan.Handler.OrderHandler;
 import com.example.changfan.Handler.RegisterHandler;
+import com.example.changfan.Handler.UpdateHandler;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class LoginActivity extends Activity implements View.OnClickListener {
@@ -29,6 +39,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     private Button button1,button2;
     private EditText editText1,editText2;
     private CheckBox checkBox1;
+    private TextView textView3;
+    private ProgressBar progressBar;
     private boolean needRemember;
 
     @Override
@@ -36,6 +48,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         context=this;
+        CheckPermissions();
         //初始化控件并设置监听
         button1=findViewById(R.id.LoginActivity_button1);
         button2=findViewById(R.id.LoginActivity_button2);
@@ -52,6 +65,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 }
             }
         });
+        textView3=findViewById(R.id.LoginActivity_TextView3);
+        progressBar=findViewById(R.id.LoginActivity_ProgressBar);
         //读取文件存储的账号密码
         try{
             FileInputStream fis=context.openFileInput("AccountMemento");
@@ -74,8 +89,110 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 checkBox1.setChecked(true);
             }
         }catch (IOException e){
-            e.printStackTrace();
+            //什么都不做
         }
+        //获取apk路径赋值给静态字段供使用
+        SDFileUtility.oldApkPath=getApplicationInfo().sourceDir;
+        //检查与更新版本
+        Handler progressMonitor=new Handler(){
+            private String length;
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                //显示版本检测结果
+                String s=msg.getData().getString("isNewest");
+                if(s!=null){
+                    Toast.makeText(context,s,Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                //初始化进度条与文字
+                s=msg.getData().getString("length");
+                if(s!=null){
+                    progressBar.setVisibility(View.VISIBLE);
+                    textView3.setVisibility(View.VISIBLE);
+                    int i=Integer.parseInt(s);
+                    progressBar.setMax(i);
+                    length="/"+GetSizeWithUnit(i);
+                    textView3.setText("0"+length);
+                    return;
+                }
+                //刷新进度条与文字
+                s=msg.getData().getString("len");
+                if(s!=null){
+                    int i=Integer.parseInt(s);
+                    progressBar.setProgress(i);
+                    textView3.setText(GetSizeWithUnit(i)+length);
+                    return;
+                }
+                //文件传输完成，合并apk
+                s=msg.getData().getString("over");
+                if(s!=null){
+                    SDFileUtility.PatchApk(this);
+                    return;
+                }
+                //apk合并成功，安装新apk
+                s=msg.getData().getString("install");
+                if(s!=null){
+                    SDFileUtility.InstallApk(context);
+                    return;
+                }
+            }
+
+            //将文件大小从字节换算成合适的单位
+            private String GetSizeWithUnit(int i){
+                double d=(double)i;
+                String unit="B";
+                if(d>1024d){
+                    d=d/1024d;
+                    unit="KB";
+                    if(d>1024d){
+                        d=d/1024d;
+                        unit="MB";
+                    }
+                }
+                DecimalFormat decimalFormat=new DecimalFormat("0.00");
+                return decimalFormat.format(d)+unit;
+            }
+        };
+        try {
+            UpdateHandler h=new UpdateHandler(getPackageManager().getPackageInfo(getPackageName(),0).versionName,progressMonitor);
+            Thread t=new Thread(new TcpThread(h));
+            t.start();
+        } catch (PackageManager.NameNotFoundException e) {
+            //什么都不做
+        }
+    }
+
+    //检测动态申请权限
+    private void CheckPermissions(){
+        //读写sd卡文件权限
+        int requestCode=0;
+        requestCode-=ActivityCompat.checkSelfPermission(this,Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        requestCode-=ActivityCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE);
+        //根据requestCode推测状态（每个权限开启0，拒绝-1）
+        if(requestCode>0){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE},requestCode);
+        }
+        //安装未知来源文件权限
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if(!getPackageManager().canRequestPackageInstalls()){
+                Uri packageURI = Uri.parse("package:"+getPackageName());
+                Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,packageURI);
+                startActivity(intent);
+            }
+        }
+    }
+
+    //权限被拒自动关闭程序,权限更改重启程序
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        for(int i:grantResults){
+            if(i==PackageManager.PERMISSION_DENIED){
+                finish();
+            }
+        }
+        final Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     //按钮响应，读取输入信息，尝试登陆与注册

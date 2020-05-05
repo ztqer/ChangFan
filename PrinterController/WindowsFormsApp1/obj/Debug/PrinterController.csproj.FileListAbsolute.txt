@@ -1,0 +1,8 @@
+C:\VSProjects\PrinterController\WindowsFormsApp1\obj\Debug\PrinterController.Properties.Resources.resources
+C:\VSProjects\PrinterController\WindowsFormsApp1\obj\Debug\PrinterController.csproj.GenerateResource.cache
+C:\VSProjects\PrinterController\WindowsFormsApp1\obj\Debug\PrinterController.exe
+C:\VSProjects\PrinterController\WindowsFormsApp1\obj\Debug\PrinterController.pdb
+C:\VSProjects\PrinterController\WindowsFormsApp1\bin\Debug\PrinterController.exe.config
+C:\VSProjects\PrinterController\WindowsFormsApp1\bin\Debug\PrinterController.exe
+C:\VSProjects\PrinterController\WindowsFormsApp1\bin\Debug\PrinterController.pdb
+C:\VSProjects\PrinterController\WindowsFormsApp1\obj\Debug\PrinterController.Form1.resources

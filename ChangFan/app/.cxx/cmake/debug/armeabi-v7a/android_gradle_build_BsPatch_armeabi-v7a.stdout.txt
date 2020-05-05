@@ -1,0 +1,78 @@
+[1/2] Building CXX object CMakeFiles/BsPatch.dir/src/main/jni/BsPatch.cpp.o
+FAILED: /Users/mac/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++  --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/mac/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/mac/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -DBsPatch_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security   -O0 -fno-limit-debug-info  -fPIC -MD -MT CMakeFiles/BsPatch.dir/src/main/jni/BsPatch.cpp.o -MF CMakeFiles/BsPatch.dir/src/main/jni/BsPatch.cpp.o.d -o CMakeFiles/BsPatch.dir/src/main/jni/BsPatch.cpp.o -c /Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/BsPatch.cpp
+/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/BsPatch.cpp:2:10: error: 'com_example_changfan_BsPatchUtility.h' file not found with <angled> include; use "quotes" instead
+#include <com_example_changfan_BsPatchUtility.h>
+         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         "com_example_changfan_BsPatchUtility.h"
+/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/BsPatch.cpp:6:58: error: expected ')'
+        (JNIEnv *env, jclass clazz, jstring old, jstring new, jstring patch){
+                                                         ^
+/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/BsPatch.cpp:6:9: note: to match this '('
+        (JNIEnv *env, jclass clazz, jstring old, jstring new, jstring patch){
+        ^
+/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/BsPatch.cpp:5:24: error: functions that differ only in their return type cannot be overloaded
+JNIEXPORT jint JNICALL Java_com_example_changfan_BsPatchUtility_Patch
+          ~~~~         ^
+/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/com_example_changfan_BsPatchUtility.h:15:24: note: previous declaration is here
+JNIEXPORT void JNICALL Java_com_example_changfan_BsPatchUtility_Patch
+          ~~~~         ^
+/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/BsPatch.cpp:9:15: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+    argv[0] = "bspatch";
+              ^
+/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/BsPatch.cpp:10:29: error: member reference type 'JNIEnv' (aka '_JNIEnv') is not a pointer; did you mean to use '.'?
+    argv[1] = (char*)((*env)->GetStringUTFChars(env, old, 0));
+                      ~~~~~~^~
+                            .
+/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/BsPatch.cpp:10:59: error: too many arguments to function call, expected 2, have 3
+    argv[1] = (char*)((*env)->GetStringUTFChars(env, old, 0));
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~           ^
+/Users/mac/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/jni.h:846:5: note: 'GetStringUTFChars' declared here
+    const char* GetStringUTFChars(jstring string, jboolean* isCopy)
+    ^
+/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/BsPatch.cpp:11:29: error: member reference type 'JNIEnv' (aka '_JNIEnv') is not a pointer; did you mean to use '.'?
+    argv[2] = (char*)((*env)->GetStringUTFChars(env, new, 0));
+                      ~~~~~~^~
+                            .
+/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/BsPatch.cpp:11:57: error: expected a type
+    argv[2] = (char*)((*env)->GetStringUTFChars(env, new, 0));
+                                                        ^
+/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/BsPatch.cpp:12:29: error: member reference type 'JNIEnv' (aka '_JNIEnv') is not a pointer; did you mean to use '.'?
+    argv[3] = (char*)((*env)->GetStringUTFChars(env, patch, 0));
+                      ~~~~~~^~
+                            .
+/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/BsPatch.cpp:12:54: error: use of undeclared identifier 'patch'; did you mean 'catch'?
+    argv[3] = (char*)((*env)->GetStringUTFChars(env, patch, 0));
+                                                     ^~~~~
+                                                     catch
+/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/BsPatch.cpp:12:54: error: expected expression
+/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/BsPatch.cpp:15:18: error: use of undeclared identifier 'executePatch'
+    int result = executePatch(args, argv);
+                 ^
+/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/BsPatch.cpp:17:11: error: member reference type 'JNIEnv' (aka '_JNIEnv') is not a pointer; did you mean to use '.'?
+    (*env)->ReleaseStringUTFChars(env, old, argv[1]);
+    ~~~~~~^~
+          .
+/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/BsPatch.cpp:17:45: error: too many arguments to function call, expected 2, have 3
+    (*env)->ReleaseStringUTFChars(env, old, argv[1]);
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~           ^~~~~~~
+/Users/mac/Library/Android/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/jni.h:849:5: note: 'ReleaseStringUTFChars' declared here
+    void ReleaseStringUTFChars(jstring string, const char* utf)
+    ^
+/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/BsPatch.cpp:18:11: error: member reference type 'JNIEnv' (aka '_JNIEnv') is not a pointer; did you mean to use '.'?
+    (*env)->ReleaseStringUTFChars(env, new, argv[2]);
+    ~~~~~~^~
+          .
+/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/BsPatch.cpp:18:43: error: expected a type
+    (*env)->ReleaseStringUTFChars(env, new, argv[2]);
+                                          ^
+/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/BsPatch.cpp:19:11: error: member reference type 'JNIEnv' (aka '_JNIEnv') is not a pointer; did you mean to use '.'?
+    (*env)->ReleaseStringUTFChars(env, patch, argv[3]);
+    ~~~~~~^~
+          .
+/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/BsPatch.cpp:19:40: error: use of undeclared identifier 'patch'; did you mean 'catch'?
+    (*env)->ReleaseStringUTFChars(env, patch, argv[3]);
+                                       ^~~~~
+                                       catch
+/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/jni/BsPatch.cpp:19:40: error: expected expression
+1 warning and 18 errors generated.
+ninja: build stopped: subcommand failed.

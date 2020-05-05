@@ -69,7 +69,7 @@ public class ViewHolder<T extends IData>{
 
     //反射比较范型，获取数据
     private String GetText(T data){
-        DecimalFormat decimalFormat=new DecimalFormat("0.000");
+        DecimalFormat decimalFormat=new DecimalFormat("0.00");
         if(data.getClass()== Number.class){
             Number n=(Number)data;
             return String.valueOf(n.number);

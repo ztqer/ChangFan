@@ -14,6 +14,7 @@ public class HandlerFactory {
 	public static final RegisterHandlerPool registerHandlerPool=new RegisterHandlerPool(maxNum);
 	public static final RootHandlerPool rootHandlerPool=new RootHandlerPool(maxNum);
 	public static final RecordHandlerPool recordHandlerPool=new RecordHandlerPool(maxNum);
+	public static final UpdateHandlerPool updateHandlerPool=new UpdateHandlerPool(maxNum);
 	//类按顺序加载，必须放在最后
 	private static final HandlerFactory instance=new HandlerFactory();
 	
@@ -26,6 +27,7 @@ public class HandlerFactory {
 		handlerPools.add(registerHandlerPool);
 		handlerPools.add(rootHandlerPool);
 		handlerPools.add(recordHandlerPool);
+		handlerPools.add(updateHandlerPool);
 	}
 	public static HandlerFactory getInstance() {
 		return instance;

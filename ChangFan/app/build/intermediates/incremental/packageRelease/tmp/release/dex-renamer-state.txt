@@ -1,4 +1,4 @@
-#Tue Apr 21 16:33:50 CST 2020
-base.0=/Users/mac/AndroidStudioProjects/ChangFan/app/build/intermediates/dex/release/mergeDexRelease/out/classes.dex
+#Tue May 05 20:37:23 CST 2020
+base.0=/Users/mac/AndroidStudioProjects/ChangFan/app/build/intermediates/dex/release/out/classes.dex
 path.0=classes.dex
 renamed.0=classes.dex

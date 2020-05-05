@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/InventoryFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/InventoryFragment_TopMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/InventoryFragment_TopMenu_Button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="库存"
+            android:textSize="25sp"/>
+
+        <Button
+            android:id="@+id/InventoryFragment_TopMenu_Button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="订单"
+            android:textSize="25sp" />
+
+        <Button
+            android:id="@+id/InventoryFragment_TopMenu_Button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="退出筛选"
+            android:textSize="25sp"
+            android:visibility="invisible"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/InventoryFragment_MainContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ExpandableListView
+            android:id="@+id/InventoryFragment_MainContent_ExpandableListView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
+
+        <ListView
+            android:id="@+id/InventoryFragment_MainContent_ListView1"
+            android:layout_width="1350dp"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
+
+    </FrameLayout>
+
+</LinearLayout>

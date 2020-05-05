@@ -18,6 +18,8 @@ public class RedisWriteUnility {
 	//SET clothkind value1,value2... 货品id
 	//HASH clothkind_具体的id weight value1 length value2 provider value3 material value4
 	//LIST inventory_具体的id value1,value2,value3... 每三个值记录一匹布颜色+数量+单位
+	//版本
+	//String version value 客户端最新版本号
 	
 	//分布式锁，向redis插入lock的key，若已存在（setnx返回null）则被其他人占用，过期时间为20s避免宕机客户不能释放锁
 	public static void Lock() {

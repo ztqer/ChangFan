@@ -47,11 +47,13 @@ public class BroadcastHandler extends AbstractHandler{
 				}
 			}
 		} catch (IOException e) {
+			throw e;
+		}
+		finally {
 			//非池管理对象移出集合使其可被回收
 			if(pool==null) {
 				receivers.remove(this);
 			}
-			throw e;
 		}
 	}
 }

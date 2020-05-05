@@ -233,6 +233,7 @@ public class InventoryFragment extends Fragment implements View.OnClickListener,
                 Order o=(Order)orderListAdapter.getItem(i);
                 if(u.orderId.equals(o.id)){
                     o.state="发货中";
+                    o.clothWithNumber.number=u.clothWithNumber.number;
                     orderListAdapter.notifyDataSetChanged();
                     break;
                 }

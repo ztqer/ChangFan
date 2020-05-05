@@ -1,75 +1,105 @@
 1<?xml version="1.0" encoding="utf-8"?>
 2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
 3    package="com.example.changfan"
-4    android:versionCode="1"
-5    android:versionName="1.0" >
-6
-7    <uses-sdk
-8        android:minSdkVersion="21"
+4    android:versionName="1.0" >
+5
+6    <uses-sdk
+7        android:minSdkVersion="21"
+7-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml
+8        android:targetSdkVersion="29" />
 8-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml
-9        android:targetSdkVersion="29" />
-9-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml
-10
+9
+10    <!-- 网络权限 -->
 11    <uses-permission android:name="android.permission.INTERNET" />
-11-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:5:5-67
-11-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:5:22-64
-12    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-12-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:6:5-78
-12-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:6:22-75
-13
-14    <application
-14-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:8:5-34:19
-15        android:allowBackup="true"
-15-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:9:9-35
-16        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-16-->[androidx.core:core:1.0.1] /Users/mac/.gradle/caches/transforms-2/files-2.1/46da25c3e2ae6308b2227b660caa604d/core-1.0.1/AndroidManifest.xml:22:18-86
-17        android:debuggable="true"
-18        android:icon="@mipmap/ic_launcher"
-18-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:10:9-43
-19        android:label="@string/app_name"
-19-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:11:9-41
-20        android:roundIcon="@mipmap/ic_launcher_round"
-20-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:12:9-54
-21        android:supportsRtl="true"
-21-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:13:9-35
-22        android:theme="@style/AppTheme" >
-22-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:14:9-40
-23        <activity
-23-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:16:9-23:20
-24            android:name="com.example.changfan.LoginActivity"
-24-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:16:19-48
-25            android:screenOrientation="portrait" >
-25-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:17:13-49
-26            <intent-filter>
-26-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:18:13-22:29
-27                <action android:name="android.intent.action.MAIN" />
-27-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:19:17-69
-27-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:19:25-66
-28
-29                <category android:name="android.intent.category.LAUNCHER" />
-29-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:21:17-77
-29-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:21:27-74
-30            </intent-filter>
-31        </activity>
-32        <activity
-32-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:25:9-26:51
-33            android:name="com.example.changfan.WarehouseActivity"
-33-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:25:19-52
-34            android:screenOrientation="portrait" />
-34-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:26:13-49
-35        <activity
-35-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:28:9-29:51
-36            android:name="com.example.changfan.StoreActivity"
-36-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:28:19-48
-37            android:screenOrientation="portrait" />
-37-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:29:13-49
+11-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:7:5-67
+11-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:7:22-64
+12    <!-- 系统级悬浮对话框权限 -->
+13    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+13-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:9:5-78
+13-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:9:22-75
+14    <!-- SDCard读写数据权限 -->
+15    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+15-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:11:5-80
+15-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:11:22-78
+16    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+16-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:12:5-79
+16-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:12:22-77
+17    <!-- 安装应用权限 -->
+18    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+18-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:14:5-82
+18-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:14:22-80
+19
+20    <application
+20-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:16:5-53:19
+21        android:allowBackup="true"
+21-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:17:9-35
+22        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+22-->[androidx.core:core:1.0.1] /Users/mac/.gradle/caches/transforms-2/files-2.1/032360533aed7f4773dde0d69318c0bd/core-1.0.1/AndroidManifest.xml:22:18-86
+23        android:debuggable="true"
+24        android:icon="@mipmap/ic_launcher"
+24-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:18:9-43
+25        android:label="@string/app_name"
+25-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:19:9-41
+26        android:roundIcon="@mipmap/ic_launcher_round"
+26-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:20:9-54
+27        android:supportsRtl="true"
+27-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:21:9-35
+28        android:theme="@style/AppTheme" >
+28-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:22:9-40
+29        <provider
+29-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:24:9-33:20
+30            android:name="androidx.core.content.FileProvider"
+30-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:25:13-62
+31            android:authorities="com.example.changfan.fileprovider"
+31-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:26:13-68
+32            android:exported="false"
+32-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:27:13-37
+33            android:grantUriPermissions="true" >
+33-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:28:13-47
+34            <meta-data
+34-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:29:13-32:19
+35                android:name="android.support.FILE_PROVIDER_PATHS"
+35-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:30:17-67
+36                android:resource="@xml/filepaths" />
+36-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:31:17-50
+37        </provider>
 38
-39        <service android:name="com.example.changfan.BackstageService.ListenToServerService" />
-39-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:31:9-75
-39-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:31:18-72
-40        <service android:name="com.example.changfan.BackstageService.RootDialogService" />
-40-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:32:9-70
-40-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:32:18-68
-41    </application>
-42
-43</manifest>
+39        <activity
+39-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:35:9-42:20
+40            android:name="com.example.changfan.LoginActivity"
+40-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:35:19-48
+41            android:screenOrientation="portrait" >
+41-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:36:13-49
+42            <intent-filter>
+42-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:37:13-41:29
+43                <action android:name="android.intent.action.MAIN" />
+43-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:38:17-69
+43-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:38:25-66
+44
+45                <category android:name="android.intent.category.LAUNCHER" />
+45-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:40:17-77
+45-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:40:27-74
+46            </intent-filter>
+47        </activity>
+48        <activity
+48-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:44:9-45:51
+49            android:name="com.example.changfan.WarehouseActivity"
+49-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:44:19-52
+50            android:screenOrientation="portrait" />
+50-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:45:13-49
+51        <activity
+51-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:47:9-48:51
+52            android:name="com.example.changfan.StoreActivity"
+52-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:47:19-48
+53            android:screenOrientation="portrait" />
+53-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:48:13-49
+54
+55        <service android:name="com.example.changfan.BackstageService.ListenToServerService" />
+55-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:50:9-75
+55-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:50:18-72
+56        <service android:name="com.example.changfan.BackstageService.RootDialogService" />
+56-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:51:9-70
+56-->/Users/mac/AndroidStudioProjects/ChangFan/app/src/main/AndroidManifest.xml:51:18-68
+57    </application>
+58
+59</manifest>

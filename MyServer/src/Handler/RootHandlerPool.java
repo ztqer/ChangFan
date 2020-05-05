@@ -19,5 +19,4 @@ public class RootHandlerPool extends AbstractHandlerPool {
 	protected AbstractHandler Reset(AbstractHandler h) {
 		return h;
 	}
-
 }

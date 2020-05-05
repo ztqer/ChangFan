@@ -4,7 +4,7 @@
             "outputFile": "/Users/mac/AndroidStudioProjects/ChangFan/app/build/intermediates/incremental/mergeReleaseResources/merged.dir/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "/Users/mac/.gradle/caches/transforms-2/files-2.1/dfb17c32c9e1bced7bb89f3e844a7607/appcompat-1.0.2/res/values-night-v8/values-night-v8.xml",
+                    "source": "/Users/mac/.gradle/caches/transforms-2/files-2.1/0d47a0d6fa5764cd649078b15eaac482/appcompat-1.0.2/res/values-night-v8/values-night-v8.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8",
                         "startColumns": "4,4,4,4,4,4,4",

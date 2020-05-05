@@ -7,8 +7,9 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 
-namespace WindowsFormsApp1
+namespace PrinterController
 {
     public partial class Form1 : Form
     {
@@ -36,6 +37,11 @@ namespace WindowsFormsApp1
             thread.Start();
         }
 
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Environment.Exit(0);
+        }
+
         //初始化表格
         private void InitializeTable()
         {
@@ -44,11 +50,11 @@ namespace WindowsFormsApp1
                 dataGridView1.Rows.Add();
             }
         }
+
+        //用于测试
         private void button1_Click(object sender, EventArgs e)
         {
-            ApplyMessage("print/client/2/1/2");
-            ApplyMessage("record/update/orderid/clothid/color/米/11/22/33/44/55/66/77/88/99/00/123/456/789");
-            ApplyMessage("record/update/orderid2/clothid/color/米/11/22/33/44/55/66/77/88/99/00/123/456/789");
+            ApplyMessage("print/客户/2/12.0/13.0");
         }
 
         //开启socket接收服务器广播
@@ -59,15 +65,18 @@ namespace WindowsFormsApp1
             byte[] buffer = new byte[1024];
             string s1 = "Broadcast";
             socket.Send(Encoding.UTF8.GetBytes(s1));
-            int len=socket.Receive(buffer);
-            string s2 = Encoding.UTF8.GetString(buffer, 0,len);
+            int len1=socket.Receive(buffer);
+            string s2 = Encoding.UTF8.GetString(buffer, 0,len1);
             if (s2.Equals("请继续"))
             {
                 while (true)
                 {
-                    socket.Receive(buffer);
-                    string message = Encoding.UTF8.GetString(buffer);
-                    ApplyMessage(message);
+                    int len2=socket.Receive(buffer);
+                    if (len2 > 1)
+                    {
+                        string message = Encoding.UTF8.GetString(buffer, 0, len2);
+                        ApplyMessage(message);
+                    }
                     socket.Send(new byte[1]);
                 }
             }
@@ -119,34 +128,52 @@ namespace WindowsFormsApp1
         //更新UI
         private void UpdateUI(object order)
         {
-            Order o = (Order)order;
-            clothNum += o.numbers.Count;
-            if (label5.Text.Equals("订单号："))
-            {
-                label5.Text+= o.orderId;
-            }
-            dataGridView1.Rows[currentRow].Cells[0].Value = o.clothId;
-            dataGridView1.Rows[currentRow].Cells[1].Value = o.color;
-            dataGridView1.Rows[currentRow].Cells[12].Value = o.numCount+o.unit;
-            dataGridView1.Rows[currentRow].Cells[13].Value = price[orderNum];
-            dataGridView1.Rows[currentRow].Cells[14].Value = price[orderNum] * o.numCount;
-            money += price[orderNum] * o.numCount;
-            int x = 0;
-            for(int i = 0; i <= o.numbers.Count - 1; i++)
-            {
-                dataGridView1.Rows[currentRow].Cells[2 + i - x].Value = o.numbers[i];
-                if (2 + i == 11)
+            try {
+                Order o = (Order)order;
+                clothNum += o.numbers.Count;
+                if (label5.Text.Equals("订单号："))
                 {
-                    x += 10;
-                    currentRow++;
+                    label5.Text += o.orderId;
+                }
+                dataGridView1.Rows[currentRow].Cells[0].Value = o.clothId;
+                dataGridView1.Rows[currentRow].Cells[1].Value = o.color;
+                dataGridView1.Rows[currentRow].Cells[12].Value = o.numCount + o.unit;
+                dataGridView1.Rows[currentRow].Cells[13].Value = price[orderNum];
+                dataGridView1.Rows[currentRow].Cells[14].Value = price[orderNum] * o.numCount;
+                money += price[orderNum] * o.numCount;
+                int x = 0;
+                for (int i = 0; i <= o.numbers.Count - 1; i++)
+                {
+                    dataGridView1.Rows[currentRow].Cells[2 + i - x].Value = o.numbers[i];
+                    if (2 + i == 11)
+                    {
+                        x += 10;
+                        currentRow++;
+                    }
+                }
+                currentRow++;
+                orderNum++;
+                if (orderNum == orderCount)
+                {
+                    context.Post(LastUpdateAndPrint, client);
                 }
             }
-            currentRow++;
-            orderNum++;
-            if (orderNum == orderCount)
+            catch(Exception e)
             {
-                context.Post(LastUpdateAndPrint, client);
+                throw e;
+                this.Text = "订单超出上限，请重新启动程序";
+                label9.Text = "订单超出上限，请重新启动程序";
+                label9.Visible = true;
+                //Thread t = new Thread(Exit);
+                //t.Start();
             }
+        }
+
+        //延时5s关闭程序
+        private void Exit()
+        {
+            Thread.Sleep(5000);
+            Environment.Exit(0);
         }
 
         //接收到完成信号，更新剩余UI并打印
@@ -227,25 +254,43 @@ namespace WindowsFormsApp1
             this.BringToFront();
             CaptureScreen();
             printDocument.DefaultPageSettings.Landscape = true;
-            dialog.Document = printDocument;
-            dialog.ShowDialog();
+            printDocument.Print();
+            //dialog.Document = printDocument;
+            //dialog.ShowDialog();
         }
 
         private void CaptureScreen()
         {
             Graphics myGraphics = this.CreateGraphics();
-            this.Location = new Point(0, 0);
-            Size s = new Size(1580,790);
+            this.Location = new Point(150, 150);
+            //适应系统缩放设置，计算工作区大小
+            Size s = new Size((int)(((float)this.Width) * (1064f / 1080f) *ScreenSettingUtility.ScaleX), (int)(((float)this.Height) * (526f / 565f) * ScreenSettingUtility.ScaleY));
             memoryImage = new Bitmap(s.Width, s.Height, myGraphics);
             Graphics memoryGraphics = Graphics.FromImage(memoryImage);
-            Point position = PointToScreen(this.Location);
-            memoryGraphics.CopyFromScreen( position.X, position.Y+10,0, 0, s);
+            memoryGraphics.CopyFromScreen(PointToScreen(label9.Location), new Point(0,0), s); 
+            //保存图片至c盘 changfan文件夹
+            //memoryImage.Save(@"C:\VSProjects\test.jpg", ImageFormat.Jpeg);
+            memoryImage.Save(@"C:\changfan\"+orders[0].orderId+".jpg", ImageFormat.Jpeg);
         }
 
-        private void printDocument_PrintPage(System.Object sender,
+        private void printDocument_PrintPage(object sender,
                PrintPageEventArgs e)
         {
-            e.Graphics.DrawImage(memoryImage, 0, 0,1134,600);
+            //超出打印纸张大小则进行缩放
+            Size s = new Size((int)(((float)this.Width) * (1064f / 1080f) * ScreenSettingUtility.ScaleX), (int)(((float)this.Height) * (526f / 565f) * ScreenSettingUtility.ScaleY));
+            int w = (int)printDocument.DefaultPageSettings.Bounds.Width;
+            int h = (int)printDocument.DefaultPageSettings.Bounds.Height;
+            float scale1 = (float)s.Width / (float)w;
+            float scale2 = (float)s.Height / (float)h;
+            if (scale1 > 1f && scale1 >= scale2)
+            {
+                h = (int)((float)s.Height / scale1);
+            }
+            else if(scale2 > 1f && scale2 > scale1)
+            {
+                w = (int)((float)s.Width / scale2);
+            }
+            e.Graphics.DrawImage(memoryImage, 0, 0,w,h);
         }
     }
 }
