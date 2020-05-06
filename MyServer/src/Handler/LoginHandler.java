@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 import Server.MyServer;
+import Server.RedisWriteUnility;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
@@ -45,6 +46,8 @@ public class LoginHandler extends AbstractHandler {
                 	h.message.add("warning/"+s1);
                 }
             } 
+        	//遍历数据时上锁，防止并发隔离性问题
+        	RedisWriteUnility.Lock();
         	//从redis读取所有订单和库存信息发送给客户端
         	//从LIST order 读取订单id，再遍历相应的HASH order_具体的id读取其他信息
             LinkedList<String> linkedList1=new LinkedList<>(jedis.lrange("order", 0, -1));
@@ -78,6 +81,7 @@ public class LoginHandler extends AbstractHandler {
             	}
             	arrayList1.add(arrayList2);
             }
+            RedisWriteUnility.UnLock();
             String s7="货品传输完成";
             os.write(s7.getBytes());
             os.flush();

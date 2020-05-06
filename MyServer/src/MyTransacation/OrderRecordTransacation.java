@@ -43,8 +43,10 @@ public class OrderRecordTransacation extends RecordTransacation {
 	}
 	
 	//根据数据库记录自增补全id编号部分
+	//在Start上锁防止并发获得相同id，Commit后解锁
 	@Override
 	public void Start() {
+		RedisWriteUnility.Lock();
 		Jedis jedis=MyServer.jedisPool.getResource();
 		String s=jedis.lindex("order", -1);
 		jedis.close();
@@ -64,7 +66,6 @@ public class OrderRecordTransacation extends RecordTransacation {
 	//向LIST order添加id，向HASH order_具体的id添加其他信息
 	@Override
 	public void Commit() {
-		RedisWriteUnility.Lock();
 		RedisWriteUnility.Rpush("order", id);
 		HashMap<String, String> hashMap=new HashMap<>();
 		hashMap.put("clothid", clothid);
